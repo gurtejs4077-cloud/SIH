@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: airfare_backend
+    environment:
+      - DATA_PROVIDER=demo
+      - DATABASE_URL=sqlite:///./airfare_intelligence.db
+      - COLLECTION_INTERVAL_MINUTES=30
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/airfare_intelligence.db:/app/airfare_intelligence.db
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: airfare_frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    restart: unless-stopped
