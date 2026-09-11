@@ -3,9 +3,15 @@
 
 @layer base {
   :root {
-    --bg-primary: #f8fafc;
-    --bg-card: #ffffff;
-    --border-color: #e2e8f0;
+    --color-sand: #C7B8A4;
+    --color-gold: #CCB68E;
+    --color-bronze: #A88C6C;
+    --color-teal: #5A7C83;
+    --color-petrol: #2C444D;
+
+    --bg-primary: #FAF8F5;
+    --bg-card: #FFFFFF;
+    --border-color: #C7B8A4;
   }
 }
 
@@ -14,8 +20,8 @@ body {
   padding: 0;
   width: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  background-color: #f8fafc;
-  color: #0f172a;
+  background-color: #FAF8F5;
+  color: #2C444D;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -26,9 +32,10 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: #FAF8F5;
 }
 
-/* Elegant standard button styles */
+/* 5-Color System Specialized Button Styles */
 .btn-primary {
   display: inline-flex;
   align-items: center;
@@ -38,22 +45,22 @@ body {
   padding-left: 1rem;
   padding-right: 1rem;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1rem;
   border-radius: 0.5rem;
   color: #ffffff;
-  background-color: #2563eb;
-  border: 1px solid #1d4ed8;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  background-color: #2C444D;
+  border: 1px solid #2C444D;
+  box-shadow: 0 1px 2px 0 rgba(44, 68, 77, 0.15);
   cursor: pointer;
   transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
   user-select: none;
 }
 .btn-primary:hover {
-  background-color: #1d4ed8;
-  border-color: #1e40af;
-  box-shadow: 0 2px 4px 0 rgba(37, 99, 235, 0.2);
+  background-color: #5A7C83;
+  border-color: #5A7C83;
+  box-shadow: 0 2px 6px 0 rgba(90, 124, 131, 0.25);
 }
 .btn-primary:active {
   transform: scale(0.98);
@@ -76,19 +83,19 @@ body {
   font-weight: 600;
   line-height: 1rem;
   border-radius: 0.5rem;
-  color: #334155;
+  color: #2C444D;
   background-color: #ffffff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  border: 1px solid #C7B8A4;
+  box-shadow: 0 1px 2px 0 rgba(199, 184, 164, 0.15);
   cursor: pointer;
   transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
   user-select: none;
 }
 .btn-secondary:hover {
-  background-color: #f8fafc;
-  color: #0f172a;
-  border-color: #cbd5e1;
+  background-color: #F4EFEA;
+  color: #2C444D;
+  border-color: #A88C6C;
 }
 .btn-secondary:active {
   transform: scale(0.98);
@@ -108,22 +115,22 @@ body {
   padding-left: 1rem;
   padding-right: 1rem;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1rem;
   border-radius: 0.5rem;
   color: #ffffff;
-  background-color: #059669;
-  border: 1px solid #047857;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  background-color: #5A7C83;
+  border: 1px solid #5A7C83;
+  box-shadow: 0 1px 2px 0 rgba(90, 124, 131, 0.2);
   cursor: pointer;
   transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
   user-select: none;
 }
 .btn-emerald:hover {
-  background-color: #047857;
-  border-color: #065f46;
-  box-shadow: 0 2px 4px 0 rgba(5, 150, 105, 0.2);
+  background-color: #2C444D;
+  border-color: #2C444D;
+  box-shadow: 0 2px 4px 0 rgba(44, 68, 77, 0.2);
 }
 .btn-emerald:active {
   transform: scale(0.98);
@@ -138,20 +145,20 @@ body {
   padding-left: 1rem;
   padding-right: 1rem;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1rem;
   border-radius: 0.5rem;
   color: #ffffff;
-  background-color: #0f172a;
-  border: 1px solid #020617;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.08);
+  background-color: #2C444D;
+  border: 1px solid #2C444D;
+  box-shadow: 0 1px 2px 0 rgba(44, 68, 77, 0.12);
   cursor: pointer;
   transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
   user-select: none;
 }
 .btn-dark:hover {
-  background-color: #1e293b;
+  background-color: #5A7C83;
 }
 .btn-dark:active {
   transform: scale(0.98);
@@ -163,21 +170,21 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #FAF8F5;
 }
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: #C7B8A4;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: #A88C6C;
 }
 
 /* Leaflet map light styling */
 .leaflet-container {
   width: 100%;
   height: 100%;
-  background-color: #f1f5f9;
+  background-color: #FAF8F5;
   border-radius: 0.75rem;
 }
 
@@ -185,19 +192,20 @@ body {
 @keyframes nodePulse {
   0% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+    box-shadow: 0 0 0 0 rgba(90, 124, 131, 0.4);
   }
   70% {
     transform: scale(1);
-    box-shadow: 0 0 0 8px rgba(59, 130, 246, 0);
+    box-shadow: 0 0 0 8px rgba(90, 124, 131, 0);
   }
   100% {
     transform: scale(0.95);
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+    box-shadow: 0 0 0 0 rgba(90, 124, 131, 0);
   }
 }
 
 .airport-pulse {
   animation: nodePulse 2s infinite;
 }
+
 

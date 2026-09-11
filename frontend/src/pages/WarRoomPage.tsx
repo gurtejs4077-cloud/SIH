@@ -208,29 +208,29 @@ export const WarRoomPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-cyan-500 selection:text-slate-950 p-3 sm:p-6 lg:p-8 font-sans">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#2C444D] selection:bg-[#CCB68E]/40 selection:text-[#2C444D] p-3 sm:p-6 lg:p-8 font-sans">
       {/* Top Futuristic Command Header */}
       <div className="max-w-7xl mx-auto mb-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-2xl bg-slate-900/80 border border-slate-800 backdrop-blur-xl shadow-2xl">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 rounded-2xl bg-white border border-[#C7B8A4] shadow-xs">
           <div className="flex items-center gap-3.5">
-            <div className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-cyan-950/60 border border-cyan-500/40 text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.25)]">
-              <Radar className="w-6 h-6 animate-spin text-cyan-400" style={{ animationDuration: '6s' }} />
-              <div className="absolute inset-0 rounded-xl border border-cyan-400/20 animate-ping opacity-30" />
+            <div className="relative flex items-center justify-center w-12 h-12 rounded-xl bg-[#5A7C83]/15 border border-[#5A7C83]/40 text-[#5A7C83] shadow-xs">
+              <Radar className="w-6 h-6 animate-spin text-[#5A7C83]" style={{ animationDuration: '6s' }} />
+              <div className="absolute inset-0 rounded-xl border border-[#5A7C83]/40 animate-ping opacity-25" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="px-2 py-0.5 rounded text-[10px] font-mono font-extrabold uppercase bg-red-500/20 text-red-400 border border-red-500/30 tracking-widest flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <span className="px-2 py-0.5 rounded text-[10px] font-mono font-extrabold uppercase bg-[#CCB68E]/25 text-[#2C444D] border border-[#A88C6C] tracking-widest flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#A88C6C] animate-pulse" />
                   DEFCON 2 • THREAT LEVEL AMBER
                 </span>
-                <span className="text-slate-500 text-xs hidden sm:inline">|</span>
-                <span className="text-xs font-mono text-cyan-400/90 hidden sm:inline">
+                <span className="text-[#C7B8A4] text-xs hidden sm:inline">|</span>
+                <span className="text-xs font-mono text-[#5A7C83] font-semibold hidden sm:inline">
                   SYSTEM ACTIVE • 1,280 FLIGHTS MONITORED
                 </span>
               </div>
-              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-2">
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#2C444D] flex items-center gap-2">
                 NATIONAL AIRFARE WAR ROOM
-                <span className="text-xs font-mono font-normal text-slate-400 bg-slate-800 px-2 py-0.5 rounded border border-slate-700">
+                <span className="text-xs font-mono font-medium text-[#2C444D] bg-[#FAF8F5] px-2 py-0.5 rounded border border-[#C7B8A4]">
                   DGCA AI RADAR GRID
                 </span>
               </h1>
@@ -244,23 +244,23 @@ export const WarRoomPage: React.FC = () => {
                 setSoundEnabled(!soundEnabled);
                 sfx.playClick();
               }}
-              className={`p-2.5 rounded-xl border text-xs font-semibold flex items-center gap-2 transition-all ${
+              className={`p-2.5 rounded-xl border text-xs font-semibold flex items-center gap-2 transition-all cursor-pointer ${
                 soundEnabled
-                  ? 'bg-slate-800/80 border-cyan-500/30 text-cyan-300 hover:bg-slate-800 shadow-[0_0_10px_rgba(6,182,212,0.15)]'
-                  : 'bg-slate-800/40 border-slate-700 text-slate-400'
+                  ? 'bg-[#5A7C83]/20 border-[#5A7C83] text-[#2C444D] shadow-xs'
+                  : 'bg-[#FAF8F5] border-[#C7B8A4] text-[#5A7C83]'
               }`}
               title={soundEnabled ? 'Mute Command SFX' : 'Enable Command SFX'}
             >
-              {soundEnabled ? <Volume2 className="w-4 h-4 text-cyan-400" /> : <VolumeX className="w-4 h-4" />}
+              {soundEnabled ? <Volume2 className="w-4 h-4 text-[#5A7C83]" /> : <VolumeX className="w-4 h-4" />}
               <span className="font-mono text-xs">{soundEnabled ? 'AUDIO ON' : 'MUTED'}</span>
             </button>
 
             <button
               onClick={isSpeaking ? handleStopBriefing : triggerExecutiveBriefing}
-              className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2.5 transition-all shadow-lg active:scale-95 ${
+              className={`px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2.5 transition-all shadow-xs active:scale-95 cursor-pointer ${
                 isSpeaking
-                  ? 'bg-red-600 hover:bg-red-500 text-white shadow-red-600/30 animate-pulse'
-                  : 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-black shadow-cyan-500/20'
+                  ? 'bg-[#A88C6C] hover:bg-[#2C444D] text-white animate-pulse'
+                  : 'bg-[#2C444D] hover:bg-[#5A7C83] text-white font-bold shadow-xs'
               }`}
             >
               {isSpeaking ? (
@@ -270,7 +270,7 @@ export const WarRoomPage: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <Mic className="w-4 h-4" />
+                  <Mic className="w-4 h-4 text-[#CCB68E]" />
                   <span>🎙️ BRIEF DGCA DIRECTOR</span>
                 </>
               )}
@@ -281,14 +281,14 @@ export const WarRoomPage: React.FC = () => {
 
       {/* Voice Visualizer Bar if speaking */}
       {isSpeaking && (
-        <div className="max-w-7xl mx-auto mb-6 p-4 rounded-xl bg-cyan-950/40 border border-cyan-500/40 backdrop-blur-md flex items-center justify-between gap-4 animate-in fade-in duration-300">
+        <div className="max-w-7xl mx-auto mb-6 p-4 rounded-xl bg-[#5A7C83]/15 border border-[#5A7C83]/40 shadow-xs flex items-center justify-between gap-4 animate-in fade-in duration-300">
           <div className="flex items-center gap-3">
-            <div className="w-3 h-3 rounded-full bg-cyan-400 animate-ping" />
+            <div className="w-3 h-3 rounded-full bg-[#5A7C83] animate-ping" />
             <div>
-              <p className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-300">
+              <p className="text-xs font-mono font-bold uppercase tracking-wider text-[#2C444D]">
                 AI EXECUTIVE VOICE COPILOT TRANSMITTING • AUDIO FEED LIVE
               </p>
-              <p className="text-xs text-slate-300 italic">
+              <p className="text-xs text-[#5A7C83] italic">
                 "{selectedCorridor.name}: Anomaly surge of +{selectedCorridor.surgeMultiplier}% detected. Recommending Section 19A statutory advisory notice."
               </p>
             </div>
@@ -298,7 +298,7 @@ export const WarRoomPage: React.FC = () => {
             {audioWaveHeights.map((h, i) => (
               <div
                 key={i}
-                className="w-1.5 bg-gradient-to-t from-cyan-500 to-emerald-400 rounded-full transition-all duration-100"
+                className="w-1.5 bg-gradient-to-t from-[#2C444D] to-[#CCB68E] rounded-full transition-all duration-100"
                 style={{ height: `${h}%` }}
               />
             ))}
@@ -311,38 +311,38 @@ export const WarRoomPage: React.FC = () => {
         {/* Left Column: Airspace Radar HUD (7 cols) */}
         <div className="lg:col-span-7 flex flex-col gap-6">
           {/* Cyber Radar Display Card */}
-          <div className="relative rounded-2xl bg-slate-900/90 border border-cyan-500/30 p-6 overflow-hidden shadow-[0_0_30px_rgba(6,182,212,0.1)]">
+          <div className="relative rounded-2xl bg-white border border-[#C7B8A4] shadow-xs p-6 overflow-hidden">
             {/* Top HUD Metrics Bar */}
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4 text-xs font-mono">
-              <div className="flex items-center gap-2 text-cyan-400">
+            <div className="flex items-center justify-between border-b border-[#C7B8A4]/60 pb-3 mb-4 text-xs font-mono">
+              <div className="flex items-center gap-2 text-[#5A7C83] font-bold">
                 <Crosshair className="w-4 h-4" />
                 <span>AIRSPACE GEOSPATIAL RADAR • 360° SWEEP</span>
               </div>
-              <div className="text-slate-400">
+              <div className="text-[#A88C6C]">
                 LAT: 20.5937° N | LON: 78.9629° E
               </div>
             </div>
 
             {/* Simulated Radar Circular Scope Container */}
-            <div className="relative w-full aspect-[4/3] max-h-[440px] rounded-xl bg-slate-950 border border-slate-800 overflow-hidden flex items-center justify-center">
+            <div className="relative w-full aspect-[4/3] max-h-[440px] rounded-xl bg-[#FAF8F5] border border-[#C7B8A4] overflow-hidden flex items-center justify-center">
               {/* Radar Concentric Rings */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-[85%] h-[85%] rounded-full border border-cyan-500/15" />
-                <div className="w-[60%] h-[60%] rounded-full border border-cyan-500/20" />
-                <div className="w-[35%] h-[35%] rounded-full border border-cyan-500/25" />
-                <div className="w-[12%] h-[12%] rounded-full border border-cyan-500/35 bg-cyan-500/5" />
+                <div className="w-[85%] h-[85%] rounded-full border border-[#5A7C83]/20" />
+                <div className="w-[60%] h-[60%] rounded-full border border-[#5A7C83]/25" />
+                <div className="w-[35%] h-[35%] rounded-full border border-[#5A7C83]/30" />
+                <div className="w-[12%] h-[12%] rounded-full border border-[#5A7C83]/40 bg-[#5A7C83]/5" />
                 {/* Crosshair Axes */}
-                <div className="absolute w-full h-[1px] bg-cyan-500/15" />
-                <div className="absolute h-full w-[1px] bg-cyan-500/15" />
-                <div className="absolute w-full h-[1px] bg-cyan-500/10 rotate-45" />
-                <div className="absolute w-full h-[1px] bg-cyan-500/10 -rotate-45" />
+                <div className="absolute w-full h-[1px] bg-[#5A7C83]/15" />
+                <div className="absolute h-full w-[1px] bg-[#5A7C83]/15" />
+                <div className="absolute w-full h-[1px] bg-[#5A7C83]/10 rotate-45" />
+                <div className="absolute w-full h-[1px] bg-[#5A7C83]/10 -rotate-45" />
               </div>
 
               {/* 360 Degree Rotating Radar Beam Sweep */}
               <div
                 className="absolute inset-0 pointer-events-none"
                 style={{
-                  background: `conic-gradient(from ${radarAngle}deg at 50% 50%, rgba(6, 182, 212, 0.28) 0deg, rgba(6, 182, 212, 0) 65deg)`,
+                  background: `conic-gradient(from ${radarAngle}deg at 50% 50%, rgba(90, 124, 131, 0.22) 0deg, rgba(90, 124, 131, 0) 65deg)`,
                   transformOrigin: '50% 50%'
                 }}
               />
@@ -355,7 +355,7 @@ export const WarRoomPage: React.FC = () => {
                   y1="28%"
                   x2="32%"
                   y2="55%"
-                  stroke="#ef4444"
+                  stroke="#A88C6C"
                   strokeWidth="2.5"
                   strokeDasharray="6 4"
                   className="animate-pulse"
@@ -366,7 +366,7 @@ export const WarRoomPage: React.FC = () => {
                   y1="28%"
                   x2="45%"
                   y2="78%"
-                  stroke="#f97316"
+                  stroke="#CCB68E"
                   strokeWidth="2"
                   strokeDasharray="4 4"
                 />
@@ -376,7 +376,7 @@ export const WarRoomPage: React.FC = () => {
                   y1="55%"
                   x2="45%"
                   y2="78%"
-                  stroke="#f97316"
+                  stroke="#CCB68E"
                   strokeWidth="2"
                   strokeDasharray="4 4"
                 />
@@ -386,7 +386,7 @@ export const WarRoomPage: React.FC = () => {
                   y1="28%"
                   x2="74%"
                   y2="44%"
-                  stroke="#10b981"
+                  stroke="#5A7C83"
                   strokeWidth="1.5"
                 />
                 {/* DEL to HYD Line */}
@@ -395,7 +395,7 @@ export const WarRoomPage: React.FC = () => {
                   y1="28%"
                   x2="49%"
                   y2="64%"
-                  stroke="#eab308"
+                  stroke="#A88C6C"
                   strokeWidth="1.5"
                   strokeDasharray="5 3"
                 />
@@ -405,7 +405,7 @@ export const WarRoomPage: React.FC = () => {
                   y1="64%"
                   x2="55%"
                   y2="82%"
-                  stroke="#10b981"
+                  stroke="#5A7C83"
                   strokeWidth="1.5"
                 />
               </svg>
@@ -431,37 +431,37 @@ export const WarRoomPage: React.FC = () => {
                   >
                     {/* Pulsing ring around node */}
                     <div
-                      className={`absolute -inset-2.5 rounded-full animate-ping opacity-40 ${
+                      className={`absolute -inset-2.5 rounded-full animate-ping opacity-30 ${
                         isCritical
-                          ? 'bg-red-500'
+                          ? 'bg-[#A88C6C]'
                           : isWarning
-                          ? 'bg-amber-500'
-                          : 'bg-emerald-500'
+                          ? 'bg-[#CCB68E]'
+                          : 'bg-[#5A7C83]'
                       }`}
                     />
 
                     {/* Airport Dot Icon */}
                     <div
-                      className={`relative w-6 h-6 rounded-full flex items-center justify-center font-mono font-black text-[9px] border-2 shadow-lg transition-transform group-hover:scale-125 ${
+                      className={`relative w-6 h-6 rounded-full flex items-center justify-center font-mono font-black text-[9px] border-2 shadow-xs transition-transform group-hover:scale-125 ${
                         isSelected
-                          ? 'bg-white text-slate-950 border-cyan-400 scale-110 shadow-[0_0_15px_#22d3ee]'
+                          ? 'bg-[#2C444D] text-white border-[#CCB68E] scale-110 shadow-md ring-2 ring-[#CCB68E]'
                           : isCritical
-                          ? 'bg-red-950 text-red-300 border-red-500'
+                          ? 'bg-[#A88C6C]/25 text-[#2C444D] border-[#A88C6C]'
                           : isWarning
-                          ? 'bg-amber-950 text-amber-300 border-amber-500'
-                          : 'bg-emerald-950 text-emerald-300 border-emerald-500'
+                          ? 'bg-[#CCB68E]/30 text-[#2C444D] border-[#CCB68E]'
+                          : 'bg-[#5A7C83]/20 text-[#2C444D] border-[#5A7C83]'
                       }`}
                     >
                       {airport.code}
                     </div>
 
                     {/* Floating Info Tag */}
-                    <div className="absolute left-7 top-1/2 -translate-y-1/2 bg-slate-900/90 border border-slate-700 px-2 py-0.5 rounded shadow-xl pointer-events-none whitespace-nowrap opacity-90 group-hover:opacity-100 z-20">
+                    <div className="absolute left-7 top-1/2 -translate-y-1/2 bg-white/95 border border-[#C7B8A4] px-2 py-0.5 rounded shadow-sm pointer-events-none whitespace-nowrap opacity-90 group-hover:opacity-100 z-20">
                       <div className="flex items-center gap-1.5 font-mono text-[10px]">
-                        <span className="font-bold text-slate-200">{airport.code}</span>
+                        <span className="font-bold text-[#2C444D]">{airport.code}</span>
                         <span
                           className={`font-bold ${
-                            isCritical ? 'text-red-400' : isWarning ? 'text-amber-400' : 'text-emerald-400'
+                            isCritical ? 'text-[#A88C6C]' : isWarning ? 'text-[#CCB68E]' : 'text-[#5A7C83]'
                           }`}
                         >
                           {airport.surge}
@@ -473,74 +473,74 @@ export const WarRoomPage: React.FC = () => {
               })}
 
               {/* Bottom Radar Legend Overlay */}
-              <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[10px] font-mono text-slate-400 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-800">
+              <div className="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-[10px] font-mono text-[#5A7C83] bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-lg border border-[#C7B8A4] shadow-xs">
                 <div className="flex items-center gap-4">
                   <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" /> Extreme Gouging (&gt;150%)
+                    <span className="w-2 h-2 rounded-full bg-[#A88C6C] animate-pulse" /> Extreme Gouging (&gt;150%)
                   </span>
                   <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-amber-500" /> Elevated (&gt;60%)
+                    <span className="w-2 h-2 rounded-full bg-[#CCB68E]" /> Elevated (&gt;60%)
                   </span>
                   <span className="flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500" /> Baseline Price
+                    <span className="w-2 h-2 rounded-full bg-[#5A7C83]" /> Baseline Price
                   </span>
                 </div>
-                <span className="hidden sm:inline text-cyan-400 font-bold">CLICK AIRPORT TO LOCK</span>
+                <span className="hidden sm:inline text-[#2C444D] font-bold">CLICK AIRPORT TO LOCK</span>
               </div>
             </div>
 
             {/* Radar Telemetry Sub-panel */}
             <div className="mt-4 grid grid-cols-3 gap-3 font-mono text-center">
-              <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800">
-                <div className="text-[10px] text-slate-500 uppercase">Collusion Alert</div>
-                <div className="text-sm font-bold text-red-400 flex items-center justify-center gap-1">
+              <div className="p-2.5 rounded-xl bg-[#FAF8F5] border border-[#C7B8A4] shadow-xs">
+                <div className="text-[10px] text-[#5A7C83] uppercase">Collusion Alert</div>
+                <div className="text-sm font-bold text-[#A88C6C] flex items-center justify-center gap-1">
                   <AlertTriangle className="w-3.5 h-3.5" /> HIGH RISK
                 </div>
               </div>
-              <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800">
-                <div className="text-[10px] text-slate-500 uppercase">Active Scrapes/Min</div>
-                <div className="text-sm font-bold text-cyan-300">248 OTAs / GDS</div>
+              <div className="p-2.5 rounded-xl bg-[#FAF8F5] border border-[#C7B8A4] shadow-xs">
+                <div className="text-[10px] text-[#5A7C83] uppercase">Active Scrapes/Min</div>
+                <div className="text-sm font-bold text-[#5A7C83]">248 OTAs / GDS</div>
               </div>
-              <div className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800">
-                <div className="text-[10px] text-slate-500 uppercase">CPI Shockwave</div>
-                <div className="text-sm font-bold text-amber-300">+0.22 bps</div>
+              <div className="p-2.5 rounded-xl bg-[#FAF8F5] border border-[#C7B8A4] shadow-xs">
+                <div className="text-[10px] text-[#5A7C83] uppercase">CPI Shockwave</div>
+                <div className="text-sm font-bold text-[#CCB68E]">+0.22 bps</div>
               </div>
             </div>
           </div>
 
           {/* Algorithmic Collusion & Cartel Radar Card */}
-          <div className="p-5 rounded-2xl bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/40 border border-slate-800 shadow-xl">
+          <div className="p-5 rounded-2xl bg-white border border-[#C7B8A4] shadow-xs">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
-                <Radio className="w-5 h-5 text-indigo-400" />
-                <h3 className="text-sm font-bold text-white tracking-wide uppercase font-mono">
+                <Radio className="w-5 h-5 text-[#5A7C83]" />
+                <h3 className="text-sm font-bold text-[#2C444D] tracking-wide uppercase font-mono">
                   Algorithmic Price Synchronization & Collusion Radar
                 </h3>
               </div>
-              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+              <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[#CCB68E]/25 text-[#2C444D] border border-[#CCB68E]">
                 AI PATTERN RECOGNITION
               </span>
             </div>
-            <p className="text-xs text-slate-400 mb-4 leading-relaxed">
+            <p className="text-xs text-[#5A7C83] mb-4 leading-relaxed">
               Detects simultaneous 30-second algorithmic fare mirrorings between major carriers. On the <strong>{selectedCorridor.name}</strong> corridor, IndiGo and Air India pricing algorithms exhibited an <strong>{selectedCorridor.cartelScore}% synchronization coefficient</strong> over the last 6 observation cycles.
             </p>
 
-            <div className="w-full bg-slate-950 rounded-xl p-3 border border-slate-800 flex items-center justify-between gap-4">
+            <div className="w-full bg-[#FAF8F5] rounded-xl p-3 border border-[#C7B8A4] flex items-center justify-between gap-4">
               <div className="flex-1">
-                <div className="flex justify-between text-[11px] font-mono text-slate-400 mb-1">
+                <div className="flex justify-between text-[11px] font-mono text-[#5A7C83] mb-1">
                   <span>Collusion Probability Index</span>
-                  <span className="font-bold text-amber-400">{selectedCorridor.cartelScore} / 100</span>
+                  <span className="font-bold text-[#A88C6C]">{selectedCorridor.cartelScore} / 100</span>
                 </div>
-                <div className="w-full h-2.5 rounded-full bg-slate-800 overflow-hidden">
+                <div className="w-full h-2.5 rounded-full bg-[#C7B8A4]/40 overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-emerald-500 via-amber-500 to-red-500 transition-all duration-500"
+                    className="h-full rounded-full bg-gradient-to-r from-[#5A7C83] via-[#CCB68E] to-[#A88C6C] transition-all duration-500"
                     style={{ width: `${selectedCorridor.cartelScore}%` }}
                   />
                 </div>
               </div>
               <button
                 onClick={() => handleOpenNotice(selectedCorridor)}
-                className="px-3 py-2 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-mono text-xs font-bold whitespace-nowrap transition-colors"
+                className="px-3 py-2 rounded-lg bg-[#CCB68E]/25 hover:bg-[#CCB68E]/40 border border-[#CCB68E] text-[#2C444D] font-mono text-xs font-bold whitespace-nowrap transition-colors cursor-pointer"
               >
                 ⚖️ Audit Collusion
               </button>
@@ -551,24 +551,24 @@ export const WarRoomPage: React.FC = () => {
         {/* Right Column: Selected Corridor Telemetry & Enforcement Deck (5 cols) */}
         <div className="lg:col-span-5 flex flex-col gap-6">
           {/* Target Route HUD Card */}
-          <div className="p-6 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-xl relative overflow-hidden">
+          <div className="p-6 rounded-2xl bg-white border border-[#C7B8A4] shadow-xs relative overflow-hidden">
             <div className="flex items-center justify-between mb-4">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-cyan-400 font-bold flex items-center gap-1.5">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[#5A7C83] font-bold flex items-center gap-1.5">
                 <Crosshair className="w-3.5 h-3.5" /> LOCKED CORRIDOR TELEMETRY
               </span>
-              <span className="text-[10px] font-mono text-slate-500">
+              <span className="text-[10px] font-mono text-[#A88C6C]">
                 SYNCED: {selectedCorridor.lastUpdated}
               </span>
             </div>
 
             <div className="flex items-baseline justify-between mb-4">
               <div>
-                <h2 className="text-2xl font-black text-white">{selectedCorridor.name}</h2>
-                <p className="text-xs font-mono text-slate-400">{selectedCorridor.airline}</p>
+                <h2 className="text-2xl font-bold text-[#2C444D]">{selectedCorridor.name}</h2>
+                <p className="text-xs font-mono text-[#5A7C83]">{selectedCorridor.airline}</p>
               </div>
               <div className="text-right">
-                <div className="text-xs text-slate-400 font-mono">Spot Fare (T+1)</div>
-                <div className="text-2xl font-mono font-black text-red-400">
+                <div className="text-xs text-[#5A7C83] font-mono">Spot Fare (T+1)</div>
+                <div className="text-2xl font-mono font-bold text-[#2C444D]">
                   ₹{selectedCorridor.spotFare.toLocaleString('en-IN')}
                 </div>
               </div>
@@ -576,39 +576,39 @@ export const WarRoomPage: React.FC = () => {
 
             {/* Deviation Comparison Cards */}
             <div className="grid grid-cols-2 gap-3 mb-5 font-mono">
-              <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800">
-                <div className="text-[10px] text-slate-500">Normal Baseline</div>
-                <div className="text-base font-bold text-slate-300">
+              <div className="p-3 rounded-xl bg-[#FAF8F5] border border-[#C7B8A4]">
+                <div className="text-[10px] text-[#5A7C83]">Normal Baseline</div>
+                <div className="text-base font-bold text-[#2C444D]">
                   ₹{selectedCorridor.baselineFare.toLocaleString('en-IN')}
                 </div>
-                <div className="text-[10px] text-slate-400">30-Day Fair Ceiling</div>
+                <div className="text-[10px] text-[#A88C6C]">30-Day Fair Ceiling</div>
               </div>
 
-              <div className="p-3 rounded-xl bg-red-950/40 border border-red-500/30">
-                <div className="text-[10px] text-red-300">Surge Deviation</div>
-                <div className="text-base font-bold text-red-400">
+              <div className="p-3 rounded-xl bg-[#CCB68E]/20 border border-[#CCB68E]">
+                <div className="text-[10px] text-[#A88C6C]">Surge Deviation</div>
+                <div className="text-base font-bold text-[#2C444D]">
                   +{selectedCorridor.surgeMultiplier}% SPIKE
                 </div>
-                <div className="text-[10px] text-red-400 font-semibold">{selectedCorridor.anomalyLevel}</div>
+                <div className="text-[10px] text-[#A88C6C] font-semibold">{selectedCorridor.anomalyLevel}</div>
               </div>
             </div>
 
             {/* Quick Action: Statutory Show Cause Notice */}
-            <div className="p-4 rounded-xl bg-red-950/20 border border-red-500/30 mb-4">
+            <div className="p-4 rounded-xl bg-[#CCB68E]/20 border border-[#CCB68E] mb-4">
               <div className="flex items-start gap-3">
-                <ShieldAlert className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                <ShieldAlert className="w-5 h-5 text-[#A88C6C] shrink-0 mt-0.5" />
                 <div className="space-y-1">
-                  <h4 className="text-xs font-bold text-red-300">Statutory Action Ready</h4>
-                  <p className="text-[11px] text-slate-300 leading-tight">
+                  <h4 className="text-xs font-bold text-[#2C444D]">Statutory Action Ready</h4>
+                  <p className="text-[11px] text-[#5A7C83] leading-tight">
                     Evidence meets DGCA Section 19A criteria for predatory surge during non-weather operational periods.
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => handleOpenNotice(selectedCorridor)}
-                className="w-full mt-3 py-2.5 rounded-lg bg-red-600 hover:bg-red-500 text-white font-mono text-xs font-bold tracking-wider flex items-center justify-center gap-2 transition-all shadow-lg shadow-red-600/20 active:scale-98"
+                className="w-full mt-3 py-2.5 rounded-lg bg-[#2C444D] hover:bg-[#5A7C83] text-white font-mono text-xs font-bold tracking-wider flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer active:scale-98"
               >
-                <FileWarning className="w-4 h-4" />
+                <FileWarning className="w-4 h-4 text-[#CCB68E]" />
                 ISSUE DGCA SHOW-CAUSE NOTICE
               </button>
             </div>
@@ -619,21 +619,21 @@ export const WarRoomPage: React.FC = () => {
                 sfx.playClick();
                 triggerExecutiveBriefing();
               }}
-              className="w-full py-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-cyan-300 font-mono text-xs font-bold flex items-center justify-center gap-2 transition-colors"
+              className="btn-secondary w-full"
             >
-              <Volume2 className="w-4 h-4 text-cyan-400" />
+              <Volume2 className="w-4 h-4 text-[#5A7C83]" />
               PLAY EXECUTIVE CORRIDOR AUDIO DISPATCH
             </button>
           </div>
 
           {/* Live Monitored Trunk Corridors List */}
-          <div className="p-5 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-xl flex-1">
+          <div className="p-5 rounded-2xl bg-white border border-[#C7B8A4] shadow-xs flex-1">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wide flex items-center gap-2">
-                <Activity className="w-4 h-4 text-cyan-400" />
+              <span className="text-xs font-mono font-bold text-[#2C444D] uppercase tracking-wide flex items-center gap-2">
+                <Activity className="w-4 h-4 text-[#5A7C83]" />
                 TRUNK CORRIDORS LIVE SURVEILLANCE
               </span>
-              <span className="text-[10px] font-mono text-slate-500">6 ACTIVE FEEDS</span>
+              <span className="text-[10px] font-mono text-[#A88C6C]">6 ACTIVE FEEDS</span>
             </div>
 
             <div className="space-y-2">
@@ -648,33 +648,33 @@ export const WarRoomPage: React.FC = () => {
                     }}
                     className={`p-3 rounded-xl cursor-pointer transition-all border font-mono ${
                       isSelected
-                        ? 'bg-slate-800/90 border-cyan-500 shadow-[0_0_15px_rgba(6,182,212,0.15)]'
-                        : 'bg-slate-950/60 border-slate-800/80 hover:border-slate-700 hover:bg-slate-900/60'
+                        ? 'bg-[#C7B8A4]/35 border-[#5A7C83] shadow-xs ring-1 ring-[#5A7C83]'
+                        : 'bg-[#FAF8F5] border-[#C7B8A4]/60 hover:border-[#A88C6C] hover:bg-white'
                     }`}
                   >
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                        <Plane className="w-3.5 h-3.5 text-cyan-400" />
+                      <span className="text-xs font-bold text-[#2C444D] flex items-center gap-1.5">
+                        <Plane className="w-3.5 h-3.5 text-[#5A7C83]" />
                         {corridor.name}
                       </span>
                       <span
                         className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
                           corridor.anomalyLevel === 'EXTREME'
-                            ? 'bg-red-500/20 text-red-400 border border-red-500/30'
+                            ? 'bg-[#A88C6C]/25 text-[#2C444D] border border-[#A88C6C]'
                             : corridor.anomalyLevel === 'UNUSUALLY HIGH'
-                            ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
+                            ? 'bg-[#CCB68E]/30 text-[#2C444D] border border-[#CCB68E]'
                             : corridor.anomalyLevel === 'ELEVATED'
-                            ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                            : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                            ? 'bg-[#CCB68E]/20 text-[#2C444D] border border-[#CCB68E]/70'
+                            : 'bg-[#5A7C83]/20 text-[#2C444D] border border-[#5A7C83]'
                         }`}
                       >
                         +{corridor.surgeMultiplier}%
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between text-[11px] text-slate-400">
+                    <div className="flex items-center justify-between text-[11px] text-[#5A7C83]">
                       <span>{corridor.airline}</span>
-                      <span className="font-bold text-slate-200">₹{corridor.spotFare.toLocaleString('en-IN')}</span>
+                      <span className="font-bold text-[#2C444D]">₹{corridor.spotFare.toLocaleString('en-IN')}</span>
                     </div>
                   </div>
                 );

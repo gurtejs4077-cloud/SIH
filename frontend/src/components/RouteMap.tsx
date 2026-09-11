@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapContainer, TileLayer, Polyline, CircleMarker, Popup, Tooltip } from 'react-leaflet';
+import { MapContainer, TileLayer, Polyline, CircleMarker, Tooltip } from 'react-leaflet';
 import { RouteItem } from '../types';
 import { AnomalyBadge } from './StatusBadge';
 import { Link } from 'react-router-dom';
@@ -26,19 +26,19 @@ export const RouteMap: React.FC<RouteMapProps> = ({ routes, selectedRoute, onSel
   const getRouteColor = (status?: string) => {
     switch (status) {
       case 'EXTREME':
-        return '#ef4444'; // Crimson red
+        return '#A88C6C'; // Caramel Bronze
       case 'UNUSUALLY HIGH':
-        return '#f97316'; // Vivid orange
+        return '#CCB68E'; // Sand Gold
       case 'ELEVATED':
-        return '#eab308'; // Amber yellow
+        return '#C7B8A4'; // Warm Sand
       case 'NORMAL':
       default:
-        return '#10b981'; // Emerald green
+        return '#5A7C83'; // Slate Teal
     }
   };
 
   return (
-    <div className="relative w-full h-[520px] rounded-xl overflow-hidden border border-gray-200 bg-white shadow-sm">
+    <div className="relative w-full h-[520px] rounded-xl overflow-hidden border border-[#C7B8A4] bg-[#FAF8F5] shadow-xs">
       <MapContainer
         center={[21.5, 78.9]}
         zoom={5}
@@ -58,14 +58,14 @@ export const RouteMap: React.FC<RouteMapProps> = ({ routes, selectedRoute, onSel
             center={[airport.lat, airport.lng]}
             radius={7}
             pathOptions={{
-              fillColor: '#3b82f6',
-              fillOpacity: 0.9,
+              fillColor: '#2C444D',
+              fillOpacity: 0.95,
               color: '#ffffff',
               weight: 2,
             }}
           >
             <Tooltip permanent direction="top" offset={[0, -8]} className="custom-airport-tooltip">
-              <span className="font-mono font-bold text-xs bg-white text-gray-800 px-1.5 py-0.5 rounded border border-gray-200 shadow-sm">
+              <span className="font-mono font-bold text-xs bg-[#FAF8F5] text-[#2C444D] px-1.5 py-0.5 rounded border border-[#C7B8A4] shadow-xs">
                 {airport.code}
               </span>
             </Tooltip>
@@ -88,7 +88,7 @@ export const RouteMap: React.FC<RouteMapProps> = ({ routes, selectedRoute, onSel
               pathOptions={{
                 color: color,
                 weight: isSelected ? 4 : 2.5,
-                opacity: isSelected ? 0.95 : 0.75,
+                opacity: isSelected ? 0.95 : 0.8,
                 dashArray: route.anomaly_status === 'EXTREME' ? '6, 6' : undefined,
               }}
               eventHandlers={{
@@ -100,15 +100,15 @@ export const RouteMap: React.FC<RouteMapProps> = ({ routes, selectedRoute, onSel
             >
               <Tooltip sticky>
                 <div className="font-sans text-xs p-1">
-                  <div className="font-bold text-gray-900 flex items-center gap-1">
+                  <div className="font-bold text-[#2C444D] flex items-center gap-1">
                     <span>{route.origin}</span>
-                    <ArrowRight className="w-3 h-3" />
+                    <ArrowRight className="w-3 h-3 text-[#5A7C83]" />
                     <span>{route.destination}</span>
                   </div>
-                  <div className="text-gray-600">
+                  <div className="text-[#2C444D]/80">
                     Current: ₹{route.current_fare?.toLocaleString() || 'N/A'}
                   </div>
-                  <div className="text-gray-500">
+                  <div className="text-[#2C444D]/60 font-mono">
                     Baseline: ₹{route.baseline_30d?.toLocaleString() || 'N/A'}
                   </div>
                 </div>
@@ -119,76 +119,76 @@ export const RouteMap: React.FC<RouteMapProps> = ({ routes, selectedRoute, onSel
       </MapContainer>
 
       {/* Map Legend Overlay */}
-      <div className="absolute top-4 right-4 z-[1000] bg-white/95 backdrop-blur border border-gray-200 rounded-lg p-3 text-xs shadow-lg max-w-xs pointer-events-auto">
-        <div className="font-bold text-gray-800 mb-2 uppercase tracking-wider flex items-center gap-2">
-          <Plane className="w-3.5 h-3.5 text-blue-500" />
+      <div className="absolute top-4 right-4 z-[1000] bg-[#FAF8F5]/95 backdrop-blur-md border border-[#C7B8A4] rounded-lg p-3 text-xs shadow-lg max-w-xs pointer-events-auto">
+        <div className="font-bold text-[#2C444D] mb-2 uppercase tracking-wider flex items-center gap-2">
+          <Plane className="w-3.5 h-3.5 text-[#5A7C83]" />
           Route Anomaly Classification
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-1.5 font-mono">
           <div className="flex items-center justify-between gap-4">
-            <span className="flex items-center gap-2 text-gray-600">
-              <span className="w-3 h-1 rounded bg-emerald-500" />
+            <span className="flex items-center gap-2 text-[#2C444D]">
+              <span className="w-3 h-1.5 rounded bg-[#5A7C83]" />
               Normal (≤15%)
             </span>
-            <span className="text-gray-400 font-mono">baseline</span>
+            <span className="text-[#2C444D]/60 text-[10px]">baseline</span>
           </div>
           <div className="flex items-center justify-between gap-4">
-            <span className="flex items-center gap-2 text-gray-600">
-              <span className="w-3 h-1 rounded bg-amber-400" />
+            <span className="flex items-center gap-2 text-[#2C444D]">
+              <span className="w-3 h-1.5 rounded bg-[#C7B8A4]" />
               Elevated (+15% - 35%)
             </span>
-            <span className="text-amber-500 font-mono">warning</span>
+            <span className="text-[#C7B8A4] text-[10px] font-bold">elevated</span>
           </div>
           <div className="flex items-center justify-between gap-4">
-            <span className="flex items-center gap-2 text-gray-600">
-              <span className="w-3 h-1 rounded bg-orange-500" />
+            <span className="flex items-center gap-2 text-[#2C444D]">
+              <span className="w-3 h-1.5 rounded bg-[#CCB68E]" />
               Unusually High (+35% - 60%)
             </span>
-            <span className="text-orange-500 font-mono">alert</span>
+            <span className="text-[#CCB68E] text-[10px] font-bold">alert</span>
           </div>
           <div className="flex items-center justify-between gap-4">
-            <span className="flex items-center gap-2 text-gray-600">
-              <span className="w-3 h-1 rounded bg-red-500" />
+            <span className="flex items-center gap-2 text-[#2C444D]">
+              <span className="w-3 h-1.5 rounded bg-[#A88C6C]" />
               Extreme (+60%+)
             </span>
-            <span className="text-red-500 font-mono">critical</span>
+            <span className="text-[#A88C6C] text-[10px] font-bold">critical</span>
           </div>
         </div>
       </div>
 
       {/* Interactive Flyout Route Drawer */}
       {activeRoute && (
-        <div className="absolute bottom-4 left-4 right-4 md:right-auto md:w-96 z-[1000] bg-white/95 backdrop-blur-md border border-gray-200 rounded-xl p-4 shadow-xl animate-in fade-in slide-in-from-bottom-3 duration-200">
-          <div className="flex items-start justify-between pb-3 border-b border-gray-200">
+        <div className="absolute bottom-4 left-4 right-4 md:right-auto md:w-96 z-[1000] bg-[#FAF8F5]/95 backdrop-blur-md border border-[#C7B8A4] rounded-xl p-4 shadow-xl">
+          <div className="flex items-start justify-between pb-3 border-b border-[#C7B8A4]/50">
             <div>
-              <div className="text-lg font-bold text-gray-900 flex items-center gap-2">
+              <div className="text-lg font-bold text-[#2C444D] flex items-center gap-2">
                 <span>{activeRoute.origin}</span>
-                <ArrowRight className="w-4 h-4 text-blue-500" />
+                <ArrowRight className="w-4 h-4 text-[#5A7C83]" />
                 <span>{activeRoute.destination}</span>
               </div>
-              <div className="text-xs text-gray-500 mt-0.5">
+              <div className="text-xs text-[#2C444D]/70 mt-0.5">
                 {activeRoute.origin_name.split(',')[0]} to {activeRoute.destination_name.split(',')[0]} ({activeRoute.distance_km} km)
               </div>
             </div>
             <button
               onClick={() => setActiveRoute(null)}
-              className="text-gray-400 hover:text-gray-900 text-sm px-1.5 py-0.5 rounded hover:bg-gray-100"
+              className="text-[#2C444D]/60 hover:text-[#2C444D] text-sm px-1.5 py-0.5 rounded hover:bg-white border border-transparent hover:border-[#C7B8A4]"
             >
               ✕
             </button>
           </div>
 
           <div className="grid grid-cols-2 gap-3 my-3 text-xs">
-            <div className="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
-              <div className="text-gray-500 mb-1">Current Fare</div>
-              <div className="text-base font-bold font-mono text-gray-900">
+            <div className="bg-white p-2.5 rounded-lg border border-[#C7B8A4]">
+              <div className="text-[#2C444D]/70 mb-1">Current Fare</div>
+              <div className="text-base font-bold font-mono text-[#2C444D]">
                 ₹{activeRoute.current_fare?.toLocaleString() || 'N/A'}
               </div>
             </div>
 
-            <div className="bg-gray-50 p-2.5 rounded-lg border border-gray-200">
-              <div className="text-gray-500 mb-1">30-Day Average</div>
-              <div className="text-base font-bold font-mono text-gray-700">
+            <div className="bg-white p-2.5 rounded-lg border border-[#C7B8A4]">
+              <div className="text-[#2C444D]/70 mb-1">30-Day Average</div>
+              <div className="text-base font-bold font-mono text-[#2C444D]/80">
                 ₹{activeRoute.baseline_30d?.toLocaleString() || 'N/A'}
               </div>
             </div>
@@ -198,7 +198,7 @@ export const RouteMap: React.FC<RouteMapProps> = ({ routes, selectedRoute, onSel
             <AnomalyBadge status={activeRoute.anomaly_status} />
             <Link
               to={`/routes/${activeRoute.code}`}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 hover:text-blue-500 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2C444D] hover:text-[#5A7C83] transition-colors"
             >
               View Route Analytics
               <ExternalLink className="w-3.5 h-3.5" />

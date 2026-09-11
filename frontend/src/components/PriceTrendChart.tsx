@@ -30,11 +30,11 @@ export const PriceTrendChart: React.FC<PriceTrendChartProps> = ({
   dataKey,
   title = 'Price Index Trajectory (30-Day)',
   unit = '',
-  color = '#3b82f6',
+  color = '#5A7C83',
 }) => {
   if (!data || data.length === 0) {
     return (
-      <div className="h-64 flex items-center justify-center text-gray-500 text-xs">
+      <div className="h-64 flex items-center justify-center text-[#A88C6C] text-xs">
         No historical trend points available.
       </div>
     );
@@ -49,7 +49,7 @@ export const PriceTrendChart: React.FC<PriceTrendChartProps> = ({
   return (
     <div className="w-full">
       {title && (
-        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">
+        <div className="text-xs font-bold text-[#2C444D] uppercase tracking-wider mb-3">
           {title}
         </div>
       )}
@@ -62,29 +62,30 @@ export const PriceTrendChart: React.FC<PriceTrendChartProps> = ({
                 <stop offset="95%" stopColor={color} stopOpacity={0.0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(199, 184, 164, 0.4)" vertical={false} />
             <XAxis
               dataKey="displayDate"
-              stroke="#6b7280"
+              stroke="#A88C6C"
               fontSize={11}
               tickLine={false}
-              axisLine={{ stroke: '#d1d5db' }}
+              axisLine={{ stroke: '#C7B8A4' }}
             />
             <YAxis
-              stroke="#6b7280"
+              stroke="#A88C6C"
               fontSize={11}
               tickLine={false}
-              axisLine={{ stroke: '#d1d5db' }}
+              axisLine={{ stroke: '#C7B8A4' }}
               domain={['auto', 'auto']}
               tickFormatter={(v) => `${unit}${v}`}
             />
             <Tooltip
               contentStyle={{
-                backgroundColor: '#ffffff',
-                borderColor: '#e5e7eb',
+                backgroundColor: '#FAF8F5',
+                borderColor: '#C7B8A4',
                 borderRadius: '0.5rem',
                 fontSize: '12px',
-                color: '#111827',
+                color: '#2C444D',
+                boxShadow: '0 4px 6px -1px rgba(44, 68, 77, 0.1)',
               }}
               formatter={(value: any) => [`${unit}${Number(value).toLocaleString()}`, dataKey === 'index_score' ? 'Index Level' : 'Avg Fare']}
               labelFormatter={(label) => `Date: ${label}`}

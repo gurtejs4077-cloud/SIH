@@ -108,13 +108,13 @@ export const DashboardPage: React.FC = () => {
   return (
     <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 py-6 space-y-6">
       {/* Top Banner / Disclaimer */}
-      <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xs">
+      <div className="bg-white border border-[#C7B8A4] rounded-xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xs">
         <div>
-          <div className="flex items-center gap-2 text-slate-900 font-bold text-base">
-            <Layers className="w-5 h-5 text-blue-600" />
+          <div className="flex items-center gap-2 text-[#2C444D] font-bold text-base">
+            <Layers className="w-5 h-5 text-[#5A7C83]" />
             <span>PROTOTYPE AIRFARE PRICE INDEX (CPI AUGMENTATION)</span>
           </div>
-          <p className="text-xs text-slate-500 mt-1 max-w-4xl leading-relaxed">
+          <p className="text-xs text-[#5A7C83] mt-1 max-w-4xl leading-relaxed">
             Real-time weighted aggregation of Indian domestic air corridors for augmenting the Consumer Price Index (CPI). Developed for SIH 2026. Data honesty certified: simulated observations are strictly demarcated.
           </p>
         </div>
@@ -122,10 +122,10 @@ export const DashboardPage: React.FC = () => {
         <div className="flex items-center gap-2.5 self-end md:self-auto shrink-0">
           <button
             onClick={openWhatsAppModal}
-            className="btn-secondary text-emerald-700 hover:text-emerald-800 hover:border-emerald-300 hover:bg-emerald-50/70"
+            className="btn-secondary"
             title="Link WhatsApp & Dispatch Real-Time Intelligence Report"
           >
-            <MessageSquare className="w-3.5 h-3.5 text-emerald-600 fill-emerald-600/20" />
+            <MessageSquare className="w-3.5 h-3.5 text-[#5A7C83]" />
             <span>Send to WhatsApp</span>
           </button>
           <button
@@ -141,7 +141,7 @@ export const DashboardPage: React.FC = () => {
             download
             className="btn-primary"
           >
-            <Download className="w-3.5 h-3.5" />
+            <Download className="w-3.5 h-3.5 text-[#CCB68E]" />
             Export Fares CSV
           </a>
         </div>
@@ -152,26 +152,26 @@ export const DashboardPage: React.FC = () => {
         {/* War Room Feature Spotlight Card */}
         <Link
           to="/war-room"
-          className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-slate-800 p-5 shadow-lg hover:border-cyan-500/50 hover:shadow-cyan-500/10 transition-all"
+          className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#FAF8F5] via-white to-[#5A7C83]/10 border border-[#5A7C83]/40 p-5 shadow-xs hover:border-[#2C444D] hover:shadow-sm transition-all"
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <span className="relative flex items-center justify-center w-8 h-8 rounded-lg bg-red-950/80 border border-red-500/40 text-red-400">
-                <Radar className="w-4 h-4 animate-spin text-red-400" style={{ animationDuration: '6s' }} />
-                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" />
+              <span className="relative flex items-center justify-center w-8 h-8 rounded-lg bg-[#A88C6C]/15 border border-[#A88C6C]/40 text-[#A88C6C]">
+                <Radar className="w-4 h-4 animate-spin text-[#A88C6C]" style={{ animationDuration: '6s' }} />
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-[#A88C6C] animate-ping" />
               </span>
-              <span className="text-[11px] font-mono font-bold tracking-wider text-red-400 uppercase bg-red-950/40 px-2 py-0.5 rounded border border-red-800/60">
+              <span className="text-[11px] font-mono font-bold tracking-wider text-[#2C444D] uppercase bg-[#CCB68E]/25 px-2 py-0.5 rounded border border-[#CCB68E]">
                 DEFCON 2 • THREAT LEVEL AMBER
               </span>
             </div>
-            <span className="text-xs font-mono text-cyan-400 group-hover:translate-x-1 transition-transform flex items-center gap-1 font-bold">
+            <span className="text-xs font-mono text-[#5A7C83] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-bold">
               LAUNCH WAR ROOM →
             </span>
           </div>
-          <h3 className="text-base font-black text-white group-hover:text-cyan-300 transition-colors">
+          <h3 className="text-base font-bold text-[#2C444D] group-hover:text-[#5A7C83] transition-colors">
             National Aviation War Room (DGCA AI Radar)
           </h3>
-          <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+          <p className="text-xs text-[#5A7C83] mt-1 leading-relaxed">
             Holographic 360° airspace sweep, <strong>voice AI executive audio briefing</strong>, algorithmic cartel detection, and statutory show-cause enforcement notice generator.
           </p>
         </Link>
@@ -179,25 +179,25 @@ export const DashboardPage: React.FC = () => {
         {/* Crisis Simulator Feature Spotlight Card */}
         <Link
           to="/simulator"
-          className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/30 border border-slate-800 p-5 shadow-lg hover:border-amber-500/50 hover:shadow-amber-500/10 transition-all"
+          className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#FAF8F5] via-white to-[#CCB68E]/20 border border-[#CCB68E]/60 p-5 shadow-xs hover:border-[#A88C6C] hover:shadow-sm transition-all"
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-950/80 border border-amber-500/40 text-amber-400">
-                <Flame className="w-4 h-4 text-amber-400" />
+              <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-[#CCB68E]/25 border border-[#CCB68E] text-[#A88C6C]">
+                <Flame className="w-4 h-4 text-[#A88C6C]" />
               </span>
-              <span className="text-[11px] font-mono font-bold tracking-wider text-amber-400 uppercase bg-amber-950/40 px-2 py-0.5 rounded border border-amber-800/60">
+              <span className="text-[11px] font-mono font-bold tracking-wider text-[#2C444D] uppercase bg-[#CCB68E]/25 px-2 py-0.5 rounded border border-[#CCB68E]">
                 WHAT-IF POLICY STRESS ENGINE
               </span>
             </div>
-            <span className="text-xs font-mono text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1 font-bold">
+            <span className="text-xs font-mono text-[#A88C6C] group-hover:translate-x-1 transition-transform flex items-center gap-1 font-bold">
               OPEN SIMULATOR →
             </span>
           </div>
-          <h3 className="text-base font-black text-white group-hover:text-amber-300 transition-colors">
+          <h3 className="text-base font-bold text-[#2C444D] group-hover:text-[#A88C6C] transition-colors">
             Crisis & Festival Shockwave Simulator
           </h3>
-          <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+          <p className="text-xs text-[#5A7C83] mt-1 leading-relaxed">
             Stress-test sudden <strong>Diwali festive rushes</strong>, +35% jet fuel (ATF) crude shocks, and cyclone hub groundings with live geospatial shockwave pulses and CPI inflation math.
           </p>
         </Link>

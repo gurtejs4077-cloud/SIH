@@ -27,17 +27,17 @@ export const MetricCard: React.FC<MetricCardProps> = ({
     <div
       className={`rounded-xl border p-5 transition-all ${
         highlight
-          ? 'bg-blue-50 border-blue-200 shadow-sm'
-          : 'bg-white border-gray-200 hover:border-gray-300 shadow-sm'
+          ? 'bg-white border-[#5A7C83] shadow-xs ring-1 ring-[#5A7C83]/30'
+          : 'bg-white border-[#C7B8A4] hover:border-[#A88C6C] shadow-xs'
       }`}
     >
-      <div className="flex items-center justify-between text-gray-500 mb-3">
+      <div className="flex items-center justify-between text-[#5A7C83] mb-3">
         <span className="text-xs font-semibold uppercase tracking-wider">{title}</span>
-        {icon && <div className="text-gray-400">{icon}</div>}
+        {icon && <div className="text-[#A88C6C]">{icon}</div>}
       </div>
 
       <div className="flex items-baseline gap-3">
-        <div className="text-3xl font-extrabold text-gray-900 font-mono tracking-tight">
+        <div className="text-3xl font-bold text-[#2C444D] font-mono tracking-tight">
           {value}
         </div>
 
@@ -45,10 +45,10 @@ export const MetricCard: React.FC<MetricCardProps> = ({
           <div
             className={`inline-flex items-center text-xs font-bold px-2 py-0.5 rounded ${
               isPositive
-                ? 'text-rose-700 bg-rose-50 border border-rose-200'
+                ? 'text-[#2C444D] bg-[#CCB68E]/30 border border-[#A88C6C]/60'
                 : isNegative
-                ? 'text-emerald-700 bg-emerald-50 border border-emerald-200'
-                : 'text-gray-500 bg-gray-100'
+                ? 'text-[#ffffff] bg-[#5A7C83] border border-[#5A7C83]'
+                : 'text-[#2C444D] bg-[#C7B8A4]/25 border border-[#C7B8A4]'
             }`}
           >
             {isPositive ? (
@@ -64,9 +64,9 @@ export const MetricCard: React.FC<MetricCardProps> = ({
       </div>
 
       {(changeLabel || subtext) && (
-        <div className="mt-2.5 text-xs text-gray-500 flex items-center justify-between">
-          {changeLabel && <span className="font-medium">{changeLabel}</span>}
-          {subtext && <span className="text-gray-400">{subtext}</span>}
+        <div className="mt-2.5 text-xs text-[#5A7C83] flex items-center justify-between">
+          {changeLabel && <span className="font-medium text-[#2C444D]">{changeLabel}</span>}
+          {subtext && <span className="text-[#A88C6C]">{subtext}</span>}
         </div>
       )}
     </div>
