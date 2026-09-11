@@ -1,9 +1,10 @@
 services:
   - type: web
     name: airfare-intelligence-platform
-    env: python
-    buildCommand: "npm --prefix frontend install && npm --prefix frontend run build && pip install -r backend/requirements.txt"
-    startCommand: "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: oregon
     envVars:
       - key: DATA_PROVIDER
         value: demo
@@ -11,5 +12,3 @@ services:
         value: "30"
       - key: DATABASE_URL
         value: sqlite:///./airfare_intelligence.db
-      - key: PYTHON_VERSION
-        value: 3.11.8

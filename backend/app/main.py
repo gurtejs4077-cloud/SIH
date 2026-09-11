@@ -83,11 +83,20 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 
 # Optional Static Frontend Serving (Single-Container Fullstack Cloud Deployment)
 import os
+from fastapi import HTTPException
 from starlette.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-FRONTEND_DIST = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "frontend", "dist"))
-if os.path.exists(FRONTEND_DIST):
+candidate_paths = [
+    os.getenv("FRONTEND_DIST"),
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "frontend", "dist")),
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")),
+    os.path.abspath(os.path.join(os.getcwd(), "frontend", "dist")),
+    os.path.abspath("/app/frontend/dist"),
+]
+FRONTEND_DIST = next((p for p in candidate_paths if p and os.path.exists(p)), None)
+
+if FRONTEND_DIST:
     logger.info(f"Serving compiled frontend static assets from: {FRONTEND_DIST}")
     assets_path = os.path.join(FRONTEND_DIST, "assets")
     if os.path.exists(assets_path):
@@ -96,11 +105,14 @@ if os.path.exists(FRONTEND_DIST):
     @app.get("/{full_path:path}", include_in_schema=False)
     async def serve_spa_app(full_path: str):
         if full_path.startswith("api") or full_path.startswith("docs") or full_path.startswith("openapi.json"):
-            return None
+            raise HTTPException(status_code=404, detail="API route not found")
         file_path = os.path.join(FRONTEND_DIST, full_path)
         if os.path.isfile(file_path):
             return FileResponse(file_path)
-        return FileResponse(os.path.join(FRONTEND_DIST, "index.html"))
+        index_file = os.path.join(FRONTEND_DIST, "index.html")
+        if os.path.isfile(index_file):
+            return FileResponse(index_file)
+        raise HTTPException(status_code=404, detail="Index file not found")
 
 if __name__ == "__main__":
     import uvicorn
