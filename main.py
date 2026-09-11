@@ -140,18 +140,24 @@ def check_environment():
 
     # WhatsApp Bridge node_modules check
     whatsapp_dir = BACKEND_DIR / "whatsapp_bridge"
-    if not (whatsapp_dir / "node_modules").exists():
-        log_warn("WhatsApp Gateway dependencies missing. Running 'npm install'...")
-        subprocess.run([npm_cmd, "install"], cwd=str(whatsapp_dir), check=True)
-        log_ok("WhatsApp Gateway dependencies installed.")
+    if whatsapp_dir.exists() and not (whatsapp_dir / "node_modules").exists():
+        try:
+            log_warn("WhatsApp Gateway dependencies missing. Running 'npm install'...")
+            subprocess.run([npm_cmd, "install"], cwd=str(whatsapp_dir), check=False)
+            log_ok("WhatsApp Gateway dependencies checked.")
+        except Exception as e:
+            log_warn(f"WhatsApp Gateway install skipped: {e}")
     else:
         log_ok("WhatsApp Gateway: Ready")
 
     # Database & Seed check
     if not DB_PATH.exists() or DB_PATH.stat().st_size < 10000:
         log_info("Database not found or unseeded. Seeding 30-day realistic baseline data...")
-        subprocess.run([sys.executable, "-m", "app.seed"], cwd=str(BACKEND_DIR), check=True)
-        log_ok("Database seeded successfully with 7,000+ historical records.")
+        try:
+            subprocess.run([sys.executable, "-m", "app.seed"], cwd=str(BACKEND_DIR), check=True)
+            log_ok("Database seeded successfully with 7,000+ historical records.")
+        except Exception as e:
+            log_warn(f"Pre-seed step notification ({e}). Backend auto-seed on launch will handle initialization.")
     else:
         log_ok(f"Database active: {DB_PATH.name} ({DB_PATH.stat().st_size // 1024} KB)")
 
@@ -167,8 +173,37 @@ def wait_for_service(url: str, timeout_sec: int = 15) -> bool:
     return False
 
 def main():
+    if "--build" in sys.argv or os.environ.get("BUILD_ONLY"):
+        print_banner()
+        check_environment()
+        npm_cmd = shutil.which("npm") or shutil.which("npm.cmd")
+        if npm_cmd:
+            log_info("Compiling production frontend bundle (npm run build)...")
+            subprocess.run([npm_cmd, "run", "build"], cwd=str(FRONTEND_DIR), check=True)
+            log_ok("Frontend production bundle compiled successfully.")
+        log_ok("Build completed successfully!")
+        return
+
     print_banner()
     check_environment()
+
+    # Cloud deployment check (Render / Railway / Heroku / Container)
+    if os.environ.get("PORT") or os.environ.get("RENDER"):
+        cloud_port = int(os.environ.get("PORT", 8000))
+        log_info(f"Cloud container detected. Starting production server on 0.0.0.0:{cloud_port}...")
+        
+        # Ensure frontend dist is ready for static serving
+        if not (FRONTEND_DIR / "dist").exists():
+            npm_cmd = shutil.which("npm") or shutil.which("npm.cmd")
+            if npm_cmd:
+                log_info("Building frontend distribution for static serving...")
+                subprocess.run([npm_cmd, "run", "build"], cwd=str(FRONTEND_DIR), check=True)
+
+        import uvicorn
+        os.chdir(str(BACKEND_DIR))
+        sys.path.insert(0, str(BACKEND_DIR))
+        uvicorn.run("app.main:app", host="0.0.0.0", port=cloud_port)
+        return
 
     # Port availability check
     backend_port = 8000

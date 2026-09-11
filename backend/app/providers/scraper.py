@@ -2,8 +2,11 @@ import asyncio
 import logging
 import datetime
 import re
-from typing import List, Dict, Any, Optional
-from playwright.async_api import async_playwright
+try:
+    from playwright.async_api import async_playwright
+except (ImportError, ModuleNotFoundError):
+    async_playwright = None
+
 from app.providers.base import FareDataProvider
 from app.schemas.all_schemas import FareObservationCreate
 
@@ -136,6 +139,10 @@ class ScraperProvider(FareDataProvider):
         """
         semaphore = asyncio.Semaphore(concurrency)
         all_observations: List[FareObservationCreate] = []
+
+        if async_playwright is None:
+            logger.warning("Playwright is not installed in this environment. Live scraping disabled.")
+            return []
 
         try:
             async with async_playwright() as p:
