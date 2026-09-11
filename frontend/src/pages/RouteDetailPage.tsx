@@ -12,21 +12,30 @@ import {
   ShieldCheck,
   CheckCircle2,
 } from 'lucide-react';
-import { fetchRouteDetail, getExportCsvUrl } from '../services/api';
-import { RouteDetail } from '../types';
-import { AnomalyBadge, SpikeBadge, AuthenticityBadge } from '../components/StatusBadge';
+import { fetchRouteDetail, fetchAnomalies, getExportCsvUrl } from '../services/api';
+import { RouteDetail, AnomalyItem } from '../types';
+import { AnomalyBadge, SpikeBadge, AuthenticityBadge, JustificationBadge } from '../components/StatusBadge';
 import { BookingWindowChart } from '../components/BookingWindowChart';
+import { ShieldAlert, Wind, Fuel } from 'lucide-react';
 
 export const RouteDetailPage: React.FC = () => {
   const { routeCode } = useParams<{ routeCode: string }>();
   const [route, setRoute] = useState<RouteDetail | null>(null);
+  const [anomaly, setAnomaly] = useState<AnomalyItem | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (routeCode) {
       setLoading(true);
-      fetchRouteDetail(routeCode)
-        .then(setRoute)
+      Promise.all([
+        fetchRouteDetail(routeCode),
+        fetchAnomalies()
+      ])
+        .then(([rt, anoms]) => {
+          setRoute(rt);
+          const match = anoms.items.find((a) => a.route === routeCode);
+          if (match) setAnomaly(match);
+        })
         .catch(console.error)
         .finally(() => setLoading(false));
     }
@@ -116,6 +125,94 @@ export const RouteDetailPage: React.FC = () => {
             <div className="leading-relaxed">
               <strong className="text-gray-900">Diagnostic Rationale: </strong>
               {spike.reason}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Causal Anti-Gouging Forensics & External Drivers Card */}
+      {anomaly && (
+        <div
+          className={`p-5 rounded-xl border transition-all ${
+            anomaly.is_justified === false || anomaly.is_predatory_alert
+              ? 'bg-red-50/80 border-2 border-red-500 shadow-md ring-2 ring-red-500/20'
+              : 'bg-white border-slate-200'
+          }`}
+        >
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200/80">
+            <div className="flex items-center gap-2">
+              <JustificationBadge
+                category={anomaly.justification_category}
+                isJustified={anomaly.is_justified}
+                label={anomaly.justification_label}
+                gougingScore={anomaly.gouging_risk_score}
+              />
+              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                Causal Price Spike Forensics
+              </span>
+            </div>
+            {anomaly.gouging_risk_score !== undefined && anomaly.gouging_risk_score > 0 && (
+              <span className="text-xs px-2.5 py-1 rounded bg-red-100 text-red-900 border border-red-300 font-mono font-bold">
+                Anti-Gouging Risk Score: {anomaly.gouging_risk_score}/100
+              </span>
+            )}
+          </div>
+
+          <div className="mt-3.5 space-y-3">
+            <div className={`p-3 rounded-lg text-xs leading-relaxed border ${
+              anomaly.is_justified === false
+                ? 'bg-red-100/90 border-red-300 text-red-950 font-medium'
+                : 'bg-slate-50 border-slate-200 text-slate-700'
+            }`}>
+              <div className="flex items-start gap-2">
+                <ShieldAlert className={`w-4 h-4 shrink-0 mt-0.5 ${anomaly.is_justified === false ? 'text-red-600' : 'text-blue-500'}`} />
+                <div>
+                  <strong>Causal Verdict: </strong>
+                  {anomaly.justification_detail || 'No unusual external driver observed on this corridor.'}
+                </div>
+              </div>
+            </div>
+
+            {/* Environmental & Fuel Verification Signals */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+              <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200/80">
+                <div className="text-[10px] text-slate-500 uppercase font-bold flex items-center gap-1">
+                  <Wind className="w-3 h-3 text-cyan-600" />
+                  <span>Origin Weather ({route.origin})</span>
+                </div>
+                <div className="font-semibold text-slate-800 mt-1">
+                  {anomaly.weather_origin?.condition || 'Clear Skies / VFR'}
+                </div>
+                <div className="text-[11px] text-slate-500 mt-0.5 font-mono">
+                  {anomaly.weather_origin?.temp_c || 28}°C • Gusts: {anomaly.weather_origin?.wind_gusts_kmh || 18} km/h
+                </div>
+              </div>
+
+              <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200/80">
+                <div className="text-[10px] text-slate-500 uppercase font-bold flex items-center gap-1">
+                  <Wind className="w-3 h-3 text-cyan-600" />
+                  <span>Destination Weather ({route.destination})</span>
+                </div>
+                <div className="font-semibold text-slate-800 mt-1">
+                  {anomaly.weather_destination?.condition || 'Clear Skies / VFR'}
+                </div>
+                <div className="text-[11px] text-slate-500 mt-0.5 font-mono">
+                  {anomaly.weather_destination?.temp_c || 27}°C • Gusts: {anomaly.weather_destination?.wind_gusts_kmh || 20} km/h
+                </div>
+              </div>
+
+              <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200/80">
+                <div className="text-[10px] text-slate-500 uppercase font-bold flex items-center gap-1">
+                  <Fuel className="w-3 h-3 text-amber-600" />
+                  <span>Jet Fuel Benchmark (ATF)</span>
+                </div>
+                <div className="font-semibold text-slate-800 mt-1">
+                  ₹{Math.round(anomaly.atf_benchmark?.price_per_kl_inr || 93480).toLocaleString()} / kL
+                </div>
+                <div className="text-[11px] text-slate-500 mt-0.5 font-mono">
+                  MoM Shift: {(anomaly.atf_benchmark?.mom_pct_change || 1.5) > 0 ? `+${anomaly.atf_benchmark?.mom_pct_change || 1.5}%` : `${anomaly.atf_benchmark?.mom_pct_change || 1.5}%`}
+                </div>
+              </div>
             </div>
           </div>
         </div>

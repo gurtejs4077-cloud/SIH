@@ -160,6 +160,16 @@ def detect_route_anomalies(db: Session) -> List[Dict[str, Any]]:
         recent_trend_prices = [o.total_fare for o in reversed(recent_obs[:8])]
         spike_info = classify_spike_type(recent_trend_prices, baseline_30d)
 
+        # Causal inference: Evaluate external justifications (Weather/Cyclone, Fuel, Festival)
+        from app.analytics.causal_engine import evaluate_surge_justification
+        causal = evaluate_surge_justification(
+            origin=route.origin,
+            destination=route.destination,
+            current_price=current_price,
+            baseline_30d=baseline_30d,
+            pct_diff=pct_diff
+        )
+
         # Find cheapest airline currently
         cheapest_airline = min(recent_obs[:5], key=lambda o: o.total_fare).airline if recent_obs else None
         is_demo_mode = any(o.is_demo for o in recent_obs[:5])
@@ -179,6 +189,18 @@ def detect_route_anomalies(db: Session) -> List[Dict[str, Any]]:
             "classification_reason": spike_info["reason"],
             "cheapest_airline": cheapest_airline,
             "is_demo": is_demo_mode,
+            # Causal and anti-gouging telemetry
+            "is_justified": causal.get("is_justified", True),
+            "justification_category": causal.get("justification_category", "NORMAL"),
+            "justification_label": causal.get("justification_label", ""),
+            "justification_detail": causal.get("justification_detail", ""),
+            "gouging_risk_score": causal.get("gouging_risk_score", 0),
+            "highlight_color": causal.get("highlight_color", "slate"),
+            "is_predatory_alert": causal.get("is_predatory_alert", False),
+            "reasons_missing": causal.get("reasons_missing"),
+            "weather_origin": causal.get("weather_origin"),
+            "weather_destination": causal.get("weather_destination"),
+            "atf_benchmark": causal.get("atf_benchmark"),
         })
 
     # Sort so most anomalous routes appear first

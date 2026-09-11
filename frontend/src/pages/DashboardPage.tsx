@@ -36,7 +36,8 @@ import {
   BookingWindowResponse,
 } from '../types';
 import { MetricCard } from '../components/MetricCard';
-import { AnomalyBadge, SpikeBadge, AuthenticityBadge } from '../components/StatusBadge';
+import { AnomalyBadge, SpikeBadge, AuthenticityBadge, JustificationBadge } from '../components/StatusBadge';
+import { ExternalDriversRadar } from '../components/ExternalDriversRadar';
 import { RouteMap } from '../components/RouteMap';
 import { PriceTrendChart } from '../components/PriceTrendChart';
 import { AirlineComparisonChart } from '../components/AirlineComparisonChart';
@@ -99,6 +100,9 @@ export const DashboardPage: React.FC = () => {
   const summary = indexData?.summary;
   const unusualRoutes = anomalies?.items.filter(
     (item) => item.status === 'UNUSUALLY HIGH' || item.status === 'EXTREME'
+  ) || [];
+  const unjustifiedRoutes = anomalies?.items.filter(
+    (item) => item.is_justified === false || item.is_predatory_alert === true
   ) || [];
 
   return (
@@ -240,19 +244,30 @@ export const DashboardPage: React.FC = () => {
         />
       </div>
 
+      {/* Real-Time External Drivers & Anti-Gouging Radar */}
+      <ExternalDriversRadar
+        unjustifiedCount={unjustifiedRoutes.length}
+        onRefresh={loadAllData}
+      />
+
       {/* Unusually Expensive Routes & Anomalies Section */}
       <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-gray-200 mb-5 gap-3">
           <div>
             <div className="flex items-center gap-2 text-base font-bold text-gray-900">
-              <ShieldAlert className="w-5 h-5 text-rose-400" />
-              <span>UNUSUALLY EXPENSIVE ROUTES & ANOMALIES</span>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-rose-950/80 text-rose-300 border border-rose-800/80 font-mono font-bold">
+              <ShieldAlert className="w-5 h-5 text-rose-500" />
+              <span>UNUSUALLY EXPENSIVE ROUTES & CAUSAL ANOMALY FORENSICS</span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-300 font-mono font-bold">
                 {anomalies?.unusual_count ?? 0} High Alerts
               </span>
+              {unjustifiedRoutes.length > 0 && (
+                <span className="text-xs px-2 py-0.5 rounded-full bg-red-600 text-white font-mono font-bold animate-pulse">
+                  {unjustifiedRoutes.length} Predatory Hikes
+                </span>
+              )}
             </div>
             <p className="text-xs text-gray-500 mt-1">
-              Automated anomaly detection comparing current fares to 30-day baselines, standard deviation (Z-score), and trajectory analysis.
+              Automated anti-gouging forensics cross-referencing fares with real-time jet fuel, weather/cyclone telemetry, and festive calendars.
             </p>
           </div>
           <Link
@@ -265,79 +280,115 @@ export const DashboardPage: React.FC = () => {
 
         {/* Anomaly Route Cards / Table */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {anomalies?.items.slice(0, 6).map((item) => (
-            <div
-              key={item.route}
-              className={`p-4 rounded-xl border transition-all ${
-                item.status === 'EXTREME'
-                  ? 'bg-rose-950/20 border-rose-800/60 shadow-md shadow-rose-950/20'
-                  : item.status === 'UNUSUALLY HIGH'
-                  ? 'bg-orange-950/20 border-orange-800/60 shadow-md shadow-orange-950/20'
-                  : item.status === 'ELEVATED'
-                  ? 'bg-amber-950/15 border-amber-800/50'
-                  : 'bg-gray-50 border-gray-200'
-              }`}
-            >
-              <div className="flex items-start justify-between">
-                <div>
-                  <div className="text-lg font-bold text-gray-900 font-mono flex items-center gap-1.5">
-                    <span>{item.origin}</span>
-                    <ArrowRight className="w-4 h-4 text-gray-500" />
-                    <span>{item.destination}</span>
+          {anomalies?.items.slice(0, 6).map((item) => {
+            const isPredatory = item.is_justified === false || item.is_predatory_alert === true;
+            return (
+              <div
+                key={item.route}
+                className={`p-4 rounded-xl border transition-all ${
+                  isPredatory
+                    ? 'bg-red-50/80 border-2 border-red-500 shadow-md ring-2 ring-red-500/20'
+                    : item.status === 'EXTREME'
+                    ? 'bg-rose-50 border-rose-300 shadow-xs'
+                    : item.status === 'UNUSUALLY HIGH'
+                    ? 'bg-orange-50 border-orange-300 shadow-xs'
+                    : item.status === 'ELEVATED'
+                    ? 'bg-amber-50 border-amber-200'
+                    : 'bg-white border-slate-200'
+                }`}
+              >
+                {/* Predatory / Unjustified Warning Banner */}
+                {isPredatory && (
+                  <div className="mb-2.5 px-2.5 py-1.5 bg-red-600 text-white rounded-lg flex items-center justify-between text-[11px] font-black uppercase tracking-tight shadow-xs animate-pulse">
+                    <span className="flex items-center gap-1.5">
+                      <ShieldAlert className="w-3.5 h-3.5" />
+                      <span>WITHOUT REASON: PREDATORY HIKE</span>
+                    </span>
+                    <span className="bg-red-950/80 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold">
+                      {item.gouging_risk_score || 85}% GOUGING RISK
+                    </span>
                   </div>
-                  <div className="text-xs text-gray-500 mt-0.5">
-                    Cheapest: <span className="text-gray-600 font-semibold">{item.cheapest_airline || 'IndiGo'}</span>
-                  </div>
-                </div>
-                <AnomalyBadge status={item.status} />
-              </div>
+                )}
 
-              <div className="grid grid-cols-2 gap-3 my-3 pt-2 border-t border-gray-200 text-xs">
-                <div>
-                  <div className="text-gray-500">Current Fare</div>
-                  <div className="text-base font-bold font-mono text-gray-900">
-                    ₹{Math.round(item.current_price).toLocaleString()}
+                <div className="flex items-start justify-between">
+                  <div>
+                    <div className="text-lg font-bold text-slate-900 font-mono flex items-center gap-1.5">
+                      <span>{item.origin}</span>
+                      <ArrowRight className="w-4 h-4 text-slate-400" />
+                      <span>{item.destination}</span>
+                    </div>
+                    <div className="text-xs text-slate-500 mt-0.5">
+                      Cheapest: <span className="text-slate-700 font-semibold">{item.cheapest_airline || 'IndiGo'}</span>
+                    </div>
                   </div>
+                  <AnomalyBadge status={item.status} />
                 </div>
-                <div>
-                  <div className="text-gray-500">30-Day Average</div>
-                  <div className="text-base font-bold font-mono text-gray-600">
-                    ₹{Math.round(item.baseline_30d).toLocaleString()}
-                  </div>
-                </div>
-              </div>
 
-              {/* Difference & Trajectory */}
-              <div className="pt-2 border-t border-gray-200 flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs text-gray-500">Difference:</span>
-                  <span
-                    className={`font-mono text-xs font-bold ${
-                      item.percentage_difference > 35 ? 'text-rose-400' : item.percentage_difference > 15 ? 'text-amber-400' : 'text-emerald-400'
+                <div className="grid grid-cols-2 gap-3 my-3 pt-2 border-t border-slate-200/80 text-xs">
+                  <div>
+                    <div className="text-slate-500">Current Fare</div>
+                    <div className={`text-base font-bold font-mono ${isPredatory ? 'text-red-600 font-black' : 'text-slate-900'}`}>
+                      ₹{Math.round(item.current_price).toLocaleString()}
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-slate-500">30-Day Average</div>
+                    <div className="text-base font-bold font-mono text-slate-600">
+                      ₹{Math.round(item.baseline_30d).toLocaleString()}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Difference & Trajectory */}
+                <div className="pt-2 border-t border-slate-200/80 flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-xs text-slate-500">Difference:</span>
+                    <span
+                      className={`font-mono text-xs font-bold ${
+                        isPredatory ? 'text-red-600 font-black' : item.percentage_difference > 35 ? 'text-rose-600' : item.percentage_difference > 15 ? 'text-amber-600' : 'text-emerald-600'
+                      }`}
+                    >
+                      {item.percentage_difference > 0 ? `+${item.percentage_difference.toFixed(1)}%` : `${item.percentage_difference.toFixed(1)}%`}
+                    </span>
+                  </div>
+                  <SpikeBadge type={item.classification_type} />
+                </div>
+
+                {/* Causal Justification Badge */}
+                <div className="mt-2.5 pt-2 border-t border-slate-200/60 flex items-center justify-between">
+                  <JustificationBadge
+                    category={item.justification_category}
+                    isJustified={item.is_justified}
+                    label={item.justification_label}
+                    gougingScore={item.gouging_risk_score}
+                  />
+                </div>
+
+                {/* Causal Explanation or Missing Reason Box */}
+                {item.justification_detail && (
+                  <div
+                    className={`mt-2 p-2 rounded text-[11px] leading-snug border flex items-start gap-1.5 ${
+                      isPredatory
+                        ? 'bg-red-100/90 border-red-300 text-red-900 font-medium'
+                        : 'bg-slate-50 border-slate-200 text-slate-600'
                     }`}
                   >
-                    {item.percentage_difference > 0 ? `+${item.percentage_difference.toFixed(1)}%` : `${item.percentage_difference.toFixed(1)}%`}
-                  </span>
+                    <Info className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${isPredatory ? 'text-red-600' : 'text-blue-500'}`} />
+                    <span>{item.justification_detail}</span>
+                  </div>
+                )}
+
+                <div className="mt-3 flex justify-end">
+                  <Link
+                    to={`/routes/${item.route}`}
+                    className="btn-secondary h-7 px-2.5 text-[11px] font-semibold text-blue-600 hover:text-blue-700"
+                  >
+                    Analyze Corridor <ArrowRight className="w-3 h-3" />
+                  </Link>
                 </div>
-                <SpikeBadge type={item.classification_type} />
               </div>
-
-              {/* Rationale explanation */}
-              <div className="mt-2.5 p-2 bg-white rounded text-[11px] text-gray-500 border border-gray-200 flex items-start gap-1.5">
-                <Info className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5" />
-                <span className="leading-snug">{item.classification_reason}</span>
-              </div>
-
-              <div className="mt-3 flex justify-end">
-                <Link
-                  to={`/routes/${item.route}`}
-                  className="btn-secondary h-7 px-2.5 text-[11px] font-semibold text-blue-600 hover:text-blue-700"
-                >
-                  Analyze Corridor <ArrowRight className="w-3 h-3" />
-                </Link>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 

@@ -96,3 +96,78 @@ export const AuthenticityBadge: React.FC<AuthenticityBadgeProps> = ({ isDemo, so
     </span>
   );
 };
+
+interface JustificationBadgeProps {
+  category?: string;
+  isJustified?: boolean;
+  label?: string;
+  gougingScore?: number;
+  className?: string;
+}
+
+export const JustificationBadge: React.FC<JustificationBadgeProps> = ({
+  category = 'NORMAL',
+  isJustified = true,
+  label,
+  gougingScore = 0,
+  className = ''
+}) => {
+  if (!isJustified || category === 'UNJUSTIFIED_GOUGING') {
+    return (
+      <span
+        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-black tracking-tight bg-red-600 text-white shadow-xs border border-red-700 animate-pulse ${className}`}
+        title="No external cost or weather driver found. Potential algorithmic price gouging!"
+      >
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+        </span>
+        <span className="uppercase">{label || 'UNJUSTIFIED HIKE (NO REASON)'}</span>
+        {gougingScore > 0 && (
+          <span className="ml-1 px-1.5 py-0.2 bg-red-950/80 rounded text-[10px] font-mono">
+            {gougingScore}% RISK
+          </span>
+        )}
+      </span>
+    );
+  }
+
+  switch (category) {
+    case 'WEATHER_CYCLONE':
+      return (
+        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-300 ${className}`}>
+          <span>🌪️</span>
+          <span>CYCLONE / WEATHER DISRUPTION</span>
+        </span>
+      );
+    case 'WEATHER_DISRUPTION':
+      return (
+        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-50 text-amber-800 border border-amber-300 ${className}`}>
+          <span>⚠️</span>
+          <span>WEATHER DELAY EXPLAINED</span>
+        </span>
+      );
+    case 'FUEL_COST':
+      return (
+        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-300 ${className}`}>
+          <span>⛽</span>
+          <span>JET FUEL (ATF) EXPLAINED</span>
+        </span>
+      );
+    case 'FESTIVAL_PEAK':
+      return (
+        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-blue-50 text-blue-800 border border-blue-300 ${className}`}>
+          <span>🎉</span>
+          <span>FESTIVE RUSH EXPLAINED</span>
+        </span>
+      );
+    case 'NORMAL':
+    default:
+      return (
+        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200 ${className}`}>
+          <span>✓</span>
+          <span>Within Baseline Band</span>
+        </span>
+      );
+  }
+};

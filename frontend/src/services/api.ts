@@ -209,4 +209,16 @@ export async function fetchAirfareForecast(
   return res.json();
 }
 
+export async function fetchExternalDrivers(): Promise<import('../types').ExternalDriversResponse> {
+  const res = await fetch(`${API_BASE}/analytics/external-drivers`);
+  if (!res.ok) throw new Error('Failed to fetch real-time external drivers');
+  return res.json();
+}
+
+export async function fetchAntiGougingAudit(): Promise<import('../types').AntiGougingAuditResponse> {
+  const res = await fetch(`${API_BASE}/analytics/anti-gouging-audit`);
+  if (!res.ok) throw new Error('Failed to fetch anti-gouging audit');
+  return res.json();
+}
+
 

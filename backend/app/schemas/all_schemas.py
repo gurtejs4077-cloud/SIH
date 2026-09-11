@@ -136,6 +136,17 @@ class AnomalyItem(BaseModel):
     classification_reason: str
     cheapest_airline: Optional[str] = None
     is_demo: bool = True
+    is_justified: bool = True
+    justification_category: str = "NORMAL"
+    justification_label: str = ""
+    justification_detail: str = ""
+    gouging_risk_score: int = 0
+    highlight_color: str = "slate"
+    is_predatory_alert: bool = False
+    reasons_missing: Optional[List[str]] = None
+    weather_origin: Optional[Dict[str, Any]] = None
+    weather_destination: Optional[Dict[str, Any]] = None
+    atf_benchmark: Optional[Dict[str, Any]] = None
 
 class AnomalyListResponse(BaseModel):
     timestamp: datetime

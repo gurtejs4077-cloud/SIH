@@ -130,6 +130,69 @@ export interface AnomalyItem {
   classification_reason: string;
   cheapest_airline?: string;
   is_demo: boolean;
+  // Causal and anti-gouging telemetry
+  is_justified?: boolean;
+  justification_category?: 'WEATHER_CYCLONE' | 'WEATHER_DISRUPTION' | 'FUEL_COST' | 'FESTIVAL_PEAK' | 'UNJUSTIFIED_GOUGING' | 'NORMAL';
+  justification_label?: string;
+  justification_detail?: string;
+  gouging_risk_score?: number;
+  highlight_color?: 'red' | 'amber' | 'green' | 'blue' | 'slate';
+  is_predatory_alert?: boolean;
+  reasons_missing?: string[];
+  weather_origin?: AirportWeatherStatus;
+  weather_destination?: AirportWeatherStatus;
+  atf_benchmark?: ATFFuelBenchmark;
+}
+
+export interface AirportWeatherStatus {
+  airport: string;
+  airport_name?: string;
+  status: 'NORMAL' | 'WARNING' | 'CRITICAL';
+  is_disrupted: boolean;
+  condition: string;
+  wind_speed_kmh: number;
+  wind_gusts_kmh: number;
+  temp_c: number;
+  is_cyclone_alert: boolean;
+  is_fog_alert: boolean;
+  source?: string;
+}
+
+export interface ATFFuelBenchmark {
+  price_per_kl_inr: number;
+  baseline_30d_inr: number;
+  mom_pct_change: number;
+  fuel_cost_share_pct: number;
+  status: 'STABLE' | 'SURGING' | 'DECLINING';
+  last_revised: string;
+  justifiable_fare_impact_pct: number;
+  fuel_surcharge_eligible: boolean;
+  telemetry_source: string;
+}
+
+export interface ExternalDriversResponse {
+  timestamp: string;
+  atf_fuel_benchmark: ATFFuelBenchmark;
+  airport_weather: AirportWeatherStatus[];
+  active_cyclone_alerts: AirportWeatherStatus[];
+  active_disruptions: AirportWeatherStatus[];
+  active_festivals: Array<{
+    name: string;
+    impact_corridors: string[];
+    expected_surge_band: string;
+    status: string;
+  }>;
+  source: string;
+}
+
+export interface AntiGougingAuditResponse {
+  timestamp: string;
+  total_corridors_analyzed: number;
+  unjustified_hikes_count: number;
+  justified_spikes_count: number;
+  flagged_corridors: AnomalyItem[];
+  audit_severity: 'CRITICAL' | 'WARNING' | 'NORMAL';
+  regulatory_note: string;
 }
 
 export interface AnomalyListResponse {

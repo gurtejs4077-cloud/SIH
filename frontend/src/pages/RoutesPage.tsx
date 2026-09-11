@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Filter, ArrowRight, Download, RefreshCw, Plane, MapPin } from 'lucide-react';
-import { fetchRoutes, getExportCsvUrl } from '../services/api';
-import { RouteItem } from '../types';
-import { AnomalyBadge, AuthenticityBadge } from '../components/StatusBadge';
+import { Search, Filter, ArrowRight, Download, RefreshCw, Plane, MapPin, ShieldAlert } from 'lucide-react';
+import { fetchRoutes, fetchAnomalies, getExportCsvUrl } from '../services/api';
+import { RouteItem, AnomalyItem } from '../types';
+import { AnomalyBadge, AuthenticityBadge, JustificationBadge } from '../components/StatusBadge';
 
 export const RoutesPage: React.FC = () => {
   const [routes, setRoutes] = useState<RouteItem[]>([]);
+  const [anomaliesMap, setAnomaliesMap] = useState<Record<string, AnomalyItem>>({});
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [loading, setLoading] = useState(true);
@@ -14,8 +15,11 @@ export const RoutesPage: React.FC = () => {
   const loadRoutes = async () => {
     try {
       setLoading(true);
-      const data = await fetchRoutes();
+      const [data, anomData] = await Promise.all([fetchRoutes(), fetchAnomalies()]);
       setRoutes(data);
+      const map: Record<string, AnomalyItem> = {};
+      anomData.items.forEach((a) => { map[a.route] = a; });
+      setAnomaliesMap(map);
     } catch (err) {
       console.error('Failed to load routes:', err);
     } finally {
@@ -33,8 +37,14 @@ export const RoutesPage: React.FC = () => {
       r.origin_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       r.destination_name.toLowerCase().includes(searchTerm.toLowerCase());
 
+    const isUnjustified = anomaliesMap[r.code]?.is_justified === false || anomaliesMap[r.code]?.is_predatory_alert === true;
+
     const matchesStatus =
-      statusFilter === 'ALL' || r.anomaly_status === statusFilter;
+      statusFilter === 'ALL'
+        ? true
+        : statusFilter === 'UNJUSTIFIED'
+        ? isUnjustified
+        : r.anomaly_status === statusFilter;
 
     return matchesSearch && matchesStatus;
   });
@@ -93,6 +103,7 @@ export const RoutesPage: React.FC = () => {
             className="h-10 bg-slate-50 border border-slate-200 rounded-lg px-3 text-xs font-medium text-slate-700 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/15 shadow-xs transition-all cursor-pointer"
           >
             <option value="ALL">All Statuses</option>
+            <option value="UNJUSTIFIED">🚨 Predatory / Unjustified Hikes (No Reason)</option>
             <option value="NORMAL">Normal (≤15%)</option>
             <option value="ELEVATED">Elevated (+15-35%)</option>
             <option value="UNUSUALLY HIGH">Unusually High (+35-60%)</option>
@@ -115,69 +126,101 @@ export const RoutesPage: React.FC = () => {
                 <th className="px-5 py-3">30D Baseline</th>
                 <th className="px-5 py-3">Change %</th>
                 <th className="px-5 py-3">Status</th>
+                <th className="px-5 py-3">Causal Justification</th>
                 <th className="px-5 py-3">Mode</th>
                 <th className="px-5 py-3 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 font-sans">
-              {filteredRoutes.map((route) => (
-                <tr key={route.code} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-5 py-4 font-mono font-bold text-gray-900 text-sm">
-                    {route.code}
-                  </td>
-                  <td className="px-5 py-4">
-                    <div className="text-gray-700 font-medium">
-                      {route.origin_name.split(',')[0]} → {route.destination_name.split(',')[0]}
-                    </div>
-                    <div className="text-[11px] text-gray-500 font-mono">
-                      {route.origin} to {route.destination}
-                    </div>
-                  </td>
-                  <td className="px-5 py-4 text-gray-500 font-mono">
-                    {route.distance_km} km
-                  </td>
-                  <td className="px-5 py-4 font-mono text-gray-600">
-                    {route.cpi_weight.toFixed(1)}
-                  </td>
-                  <td className="px-5 py-4 font-mono font-bold text-gray-900">
-                    ₹{route.current_fare?.toLocaleString() ?? '—'}
-                  </td>
-                  <td className="px-5 py-4 font-mono text-gray-500">
-                    ₹{route.baseline_30d?.toLocaleString() ?? '—'}
-                  </td>
-                  <td className="px-5 py-4 font-mono font-bold">
-                    {route.change_pct !== undefined && route.change_pct !== null ? (
-                      <span
-                        className={
-                          route.change_pct > 35
-                            ? 'text-rose-400'
-                            : route.change_pct > 15
-                            ? 'text-amber-400'
-                            : 'text-emerald-400'
-                        }
+            <tbody className="divide-y divide-slate-200 font-sans">
+              {filteredRoutes.map((route) => {
+                const anom = anomaliesMap[route.code];
+                const isPredatory = anom?.is_justified === false || anom?.is_predatory_alert === true;
+
+                return (
+                  <tr
+                    key={route.code}
+                    className={`transition-colors ${
+                      isPredatory
+                        ? 'bg-red-50/70 hover:bg-red-100/70 border-l-4 border-l-red-600'
+                        : 'hover:bg-gray-50'
+                    }`}
+                  >
+                    <td className="px-5 py-4 font-mono font-bold text-gray-900 text-sm">
+                      <div className="flex items-center gap-1.5">
+                        {isPredatory && (
+                          <span className="w-2 h-2 rounded-full bg-red-600 animate-ping" title="Flagged Unjustified Hike" />
+                        )}
+                        <span>{route.code}</span>
+                      </div>
+                    </td>
+                    <td className="px-5 py-4">
+                      <div className="text-gray-700 font-medium">
+                        {route.origin_name.split(',')[0]} → {route.destination_name.split(',')[0]}
+                      </div>
+                      <div className="text-[11px] text-gray-500 font-mono">
+                        {route.origin} to {route.destination}
+                      </div>
+                    </td>
+                    <td className="px-5 py-4 text-gray-500 font-mono">
+                      {route.distance_km} km
+                    </td>
+                    <td className="px-5 py-4 font-mono text-gray-600">
+                      {route.cpi_weight.toFixed(1)}
+                    </td>
+                    <td className="px-5 py-4 font-mono font-bold text-gray-900">
+                      ₹{route.current_fare?.toLocaleString() ?? '—'}
+                    </td>
+                    <td className="px-5 py-4 font-mono text-gray-500">
+                      ₹{route.baseline_30d?.toLocaleString() ?? '—'}
+                    </td>
+                    <td className="px-5 py-4 font-mono font-bold">
+                      {route.change_pct !== undefined && route.change_pct !== null ? (
+                        <span
+                          className={
+                            isPredatory
+                              ? 'text-red-600 font-black'
+                              : route.change_pct > 35
+                              ? 'text-rose-500'
+                              : route.change_pct > 15
+                              ? 'text-amber-500'
+                              : 'text-emerald-600'
+                          }
+                        >
+                          {route.change_pct > 0 ? `+${route.change_pct}%` : `${route.change_pct}%`}
+                        </span>
+                      ) : (
+                        '—'
+                      )}
+                    </td>
+                    <td className="px-5 py-4">
+                      <AnomalyBadge status={route.anomaly_status} />
+                    </td>
+                    <td className="px-5 py-4">
+                      {anom ? (
+                        <JustificationBadge
+                          category={anom.justification_category}
+                          isJustified={anom.is_justified}
+                          label={anom.justification_label}
+                          gougingScore={anom.gouging_risk_score}
+                        />
+                      ) : (
+                        <span className="text-gray-400 font-mono text-xs">—</span>
+                      )}
+                    </td>
+                    <td className="px-5 py-4">
+                      <AuthenticityBadge isDemo={route.is_demo} />
+                    </td>
+                    <td className="px-5 py-4 text-right">
+                      <Link
+                        to={`/routes/${route.code}`}
+                        className="btn-secondary h-7 px-2.5 text-[11px] font-semibold text-blue-600 hover:text-blue-700"
                       >
-                        {route.change_pct > 0 ? `+${route.change_pct}%` : `${route.change_pct}%`}
-                      </span>
-                    ) : (
-                      '—'
-                    )}
-                  </td>
-                  <td className="px-5 py-4">
-                    <AnomalyBadge status={route.anomaly_status} />
-                  </td>
-                  <td className="px-5 py-4">
-                    <AuthenticityBadge isDemo={route.is_demo} />
-                  </td>
-                  <td className="px-5 py-4 text-right">
-                    <Link
-                      to={`/routes/${route.code}`}
-                      className="btn-secondary h-7 px-2.5 text-[11px] font-semibold text-blue-600 hover:text-blue-700"
-                    >
-                      Deep Dive <ArrowRight className="w-3 h-3" />
-                    </Link>
-                  </td>
-                </tr>
-              ))}
+                        Deep Dive <ArrowRight className="w-3 h-3" />
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
