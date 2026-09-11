@@ -70,7 +70,19 @@ airfare-intelligence/
 
 ## 4. Quickstart Installation
 
-### Option A: Local Development (Fastest)
+### Option 0: Single-Command Full Launch (Fastest & Recommended)
+
+Simply run the master launcher from the project root:
+```bash
+python main.py
+```
+*(On Windows, you can also simply double-click **`start.bat`**)*
+
+This automatically checks dependencies, seeds the database if needed, boots both the FastAPI backend and Vite frontend, and opens the dashboard in your browser at **`http://localhost:5173`**.
+
+---
+
+### Option A: Manual Local Development
 
 #### 1. Backend Setup
 ```bash
@@ -233,6 +245,22 @@ The platform records observations across 5 advance booking windows:
 - **$T+45$:** Deep advance planning (45 days prior).
 
 This allows the system to compute the **Booking Price Elasticity Curve** and quantify average consumer savings (e.g., *"Average saving from booking 30 days early: ₹2,350 / 31%"*).
+
+---
+
+## 12. Automated WhatsApp Intelligence Dispatcher (Linked Devices)
+
+The platform features an automated WhatsApp Multi-Device Gateway:
+- **Zero-Cost Multi-Device Linking:** Employs `@whiskeysockets/baileys` to link any standard WhatsApp mobile number via **Settings > Linked Devices > Link a Device**.
+- **1-Click Executive Delivery:** Dispatches the complete MoSPI CPI Augmentation bulletin, National Laspeyres Index status, festival anomaly warnings, and booking elasticity savings directly to:
+  - The linked user ("Message Yourself")
+  - Custom phone numbers (Judges, Ministry evaluators, or stakeholders)
+- **Direct Web Fallback:** Provides an instant `wa.me` fallback link requiring zero pairing.
+- **REST Endpoints:**
+  - `GET /api/whatsapp/status`: Check connection state and retrieve multi-device QR code.
+  - `GET /api/whatsapp/report`: Real-time formatted analytical bulletin.
+  - `POST /api/whatsapp/send`: One-click programmatic WhatsApp dispatch.
+  - `POST /api/whatsapp/disconnect`: Unlink session and reset multi-device pairing.
 
 ---
 

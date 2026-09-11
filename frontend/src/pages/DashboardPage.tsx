@@ -12,6 +12,9 @@ import {
   ShieldAlert,
   Info,
   Layers,
+  MessageSquare,
+  Radar,
+  Flame
 } from 'lucide-react';
 import {
   fetchCurrentIndex,
@@ -22,6 +25,9 @@ import {
   fetchFareHistory,
   getExportCsvUrl,
 } from '../services/api';
+import { openWhatsAppModal } from '../services/modalEvents';
+
+
 import {
   IndexResponse,
   AnomalyListResponse,
@@ -45,6 +51,7 @@ export const DashboardPage: React.FC = () => {
   const [fareHistory, setFareHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
 
   const loadAllData = async () => {
     try {
@@ -77,12 +84,12 @@ export const DashboardPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <div className="inline-block w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-4" />
-        <div className="text-gray-600 font-semibold text-sm">
+      <div className="w-full px-4 py-24 text-center">
+        <div className="inline-block w-9 h-9 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mb-4" />
+        <div className="text-slate-800 font-bold text-sm">
           Loading Real-Time Airfare Intelligence Platform...
         </div>
-        <div className="text-gray-500 text-xs mt-1">
+        <div className="text-slate-500 text-xs mt-1">
           Aggregating price index, anomaly baselines, and booking elasticity
         </div>
       </div>
@@ -95,24 +102,32 @@ export const DashboardPage: React.FC = () => {
   ) || [];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 py-6 space-y-6">
       {/* Top Banner / Disclaimer */}
-      <div className="bg-white border border-gray-200 rounded-xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-sm">
+      <div className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 shadow-xs">
         <div>
-          <div className="flex items-center gap-2 text-gray-900 font-bold text-base">
-            <Layers className="w-5 h-5 text-blue-400" />
+          <div className="flex items-center gap-2 text-slate-900 font-bold text-base">
+            <Layers className="w-5 h-5 text-blue-600" />
             <span>PROTOTYPE AIRFARE PRICE INDEX (CPI AUGMENTATION)</span>
           </div>
-          <p className="text-xs text-gray-500 mt-1 max-w-3xl">
+          <p className="text-xs text-slate-500 mt-1 max-w-4xl leading-relaxed">
             Real-time weighted aggregation of Indian domestic air corridors for augmenting the Consumer Price Index (CPI). Developed for SIH 2026. Data honesty certified: simulated observations are strictly demarcated.
           </p>
         </div>
 
-        <div className="flex items-center gap-3 self-end md:self-auto">
+        <div className="flex items-center gap-2.5 self-end md:self-auto shrink-0">
+          <button
+            onClick={openWhatsAppModal}
+            className="btn-secondary text-emerald-700 hover:text-emerald-800 hover:border-emerald-300 hover:bg-emerald-50/70"
+            title="Link WhatsApp & Dispatch Real-Time Intelligence Report"
+          >
+            <MessageSquare className="w-3.5 h-3.5 text-emerald-600 fill-emerald-600/20" />
+            <span>Send to WhatsApp</span>
+          </button>
           <button
             onClick={loadAllData}
             disabled={refreshing}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 transition-colors"
+            className="btn-secondary"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`} />
             Refresh
@@ -120,12 +135,68 @@ export const DashboardPage: React.FC = () => {
           <a
             href={getExportCsvUrl()}
             download
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-gray-900 shadow-md shadow-blue-900/30 transition-colors"
+            className="btn-primary"
           >
             <Download className="w-3.5 h-3.5" />
             Export Fares CSV
           </a>
         </div>
+      </div>
+
+      {/* SIH 2026 Executive Innovation Showcase Strip */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* War Room Feature Spotlight Card */}
+        <Link
+          to="/war-room"
+          className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border border-slate-800 p-5 shadow-lg hover:border-cyan-500/50 hover:shadow-cyan-500/10 transition-all"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <span className="relative flex items-center justify-center w-8 h-8 rounded-lg bg-red-950/80 border border-red-500/40 text-red-400">
+                <Radar className="w-4 h-4 animate-spin text-red-400" style={{ animationDuration: '6s' }} />
+                <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" />
+              </span>
+              <span className="text-[11px] font-mono font-bold tracking-wider text-red-400 uppercase bg-red-950/40 px-2 py-0.5 rounded border border-red-800/60">
+                DEFCON 2 • THREAT LEVEL AMBER
+              </span>
+            </div>
+            <span className="text-xs font-mono text-cyan-400 group-hover:translate-x-1 transition-transform flex items-center gap-1 font-bold">
+              LAUNCH WAR ROOM →
+            </span>
+          </div>
+          <h3 className="text-base font-black text-white group-hover:text-cyan-300 transition-colors">
+            National Aviation War Room (DGCA AI Radar)
+          </h3>
+          <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+            Holographic 360° airspace sweep, <strong>voice AI executive audio briefing</strong>, algorithmic cartel detection, and statutory show-cause enforcement notice generator.
+          </p>
+        </Link>
+
+        {/* Crisis Simulator Feature Spotlight Card */}
+        <Link
+          to="/simulator"
+          className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-amber-950/30 border border-slate-800 p-5 shadow-lg hover:border-amber-500/50 hover:shadow-amber-500/10 transition-all"
+        >
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-amber-950/80 border border-amber-500/40 text-amber-400">
+                <Flame className="w-4 h-4 text-amber-400" />
+              </span>
+              <span className="text-[11px] font-mono font-bold tracking-wider text-amber-400 uppercase bg-amber-950/40 px-2 py-0.5 rounded border border-amber-800/60">
+                WHAT-IF POLICY STRESS ENGINE
+              </span>
+            </div>
+            <span className="text-xs font-mono text-amber-400 group-hover:translate-x-1 transition-transform flex items-center gap-1 font-bold">
+              OPEN SIMULATOR →
+            </span>
+          </div>
+          <h3 className="text-base font-black text-white group-hover:text-amber-300 transition-colors">
+            Crisis & Festival Shockwave Simulator
+          </h3>
+          <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+            Stress-test sudden <strong>Diwali festive rushes</strong>, +35% jet fuel (ATF) crude shocks, and cyclone hub groundings with live geospatial shockwave pulses and CPI inflation math.
+          </p>
+        </Link>
       </div>
 
       {/* Primary KPI Metric Cards */}
@@ -186,9 +257,9 @@ export const DashboardPage: React.FC = () => {
           </div>
           <Link
             to="/routes"
-            className="text-xs font-semibold text-blue-400 hover:text-blue-300 inline-flex items-center gap-1 self-start sm:self-auto"
+            className="btn-secondary h-8 px-3 text-xs"
           >
-            View All 10 Routes <ArrowRight className="w-3.5 h-3.5" />
+            View All Routes <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
@@ -257,10 +328,10 @@ export const DashboardPage: React.FC = () => {
                 <span className="leading-snug">{item.classification_reason}</span>
               </div>
 
-              <div className="mt-3 text-right">
+              <div className="mt-3 flex justify-end">
                 <Link
                   to={`/routes/${item.route}`}
-                  className="text-xs font-semibold text-blue-400 hover:text-blue-300 inline-flex items-center gap-1"
+                  className="btn-secondary h-7 px-2.5 text-[11px] font-semibold text-blue-600 hover:text-blue-700"
                 >
                   Analyze Corridor <ArrowRight className="w-3 h-3" />
                 </Link>

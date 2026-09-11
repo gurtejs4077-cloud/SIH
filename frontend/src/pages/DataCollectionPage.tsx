@@ -53,9 +53,9 @@ export const DataCollectionPage: React.FC = () => {
 
   if (loading && !status) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <div className="inline-block w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-4" />
-        <div className="text-gray-600 font-semibold text-sm">
+      <div className="w-full px-4 py-24 text-center">
+        <div className="inline-block w-9 h-9 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mb-4" />
+        <div className="text-slate-800 font-bold text-sm">
           Loading Data Pipeline Status...
         </div>
       </div>
@@ -63,32 +63,28 @@ export const DataCollectionPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 py-6 space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
         <div>
-          <div className="flex items-center gap-2 text-xl font-bold text-gray-900">
-            <RefreshCw className="w-6 h-6 text-blue-400" />
+          <div className="flex items-center gap-2 text-xl font-bold text-slate-900">
+            <RefreshCw className="w-6 h-6 text-blue-600" />
             <span>Airfare Data Collection Pipeline (Admin)</span>
           </div>
-          <p className="text-xs text-gray-500 mt-1 max-w-3xl">
+          <p className="text-xs text-slate-500 mt-1 max-w-4xl leading-relaxed">
             Automated background scheduler and telemetry engine for collecting, normalizing, and calculating Indian airfare prices.
           </p>
         </div>
 
         {/* Run Collection Button */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={handleRunCollection}
             disabled={running}
-            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-xs font-bold text-gray-900 shadow-lg transition-all ${
-              running
-                ? 'bg-slate-700 cursor-not-allowed'
-                : 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-950/40'
-            }`}
+            className="btn-emerald h-10 px-5 text-xs font-bold"
           >
             {running ? (
-              <RefreshCw className="w-4 h-4 animate-spin text-gray-900" />
+              <RefreshCw className="w-4 h-4 animate-spin text-white" />
             ) : (
               <Play className="w-4 h-4 fill-current" />
             )}

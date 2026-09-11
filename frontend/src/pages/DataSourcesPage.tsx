@@ -16,14 +16,14 @@ export const DataSourcesPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 py-6 space-y-6">
       {/* Header */}
-      <div className="pb-4 border-b border-gray-200">
-        <div className="flex items-center gap-2 text-xl font-bold text-gray-900">
-          <Database className="w-6 h-6 text-blue-400" />
+      <div className="pb-4 border-b border-slate-200">
+        <div className="flex items-center gap-2 text-xl font-bold text-slate-900">
+          <Database className="w-6 h-6 text-blue-600" />
           <span>Data Sources & Observation Transparency Registry</span>
         </div>
-        <p className="text-xs text-gray-500 mt-1 max-w-3xl">
+        <p className="text-xs text-slate-500 mt-1 max-w-4xl leading-relaxed">
           Comprehensive disclosure of all active and configured airfare data collection connectors. The platform enforces strict ethical policies and transparently demarcates genuine external observations from synthetic prototype simulation data.
         </p>
       </div>

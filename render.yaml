@@ -1,13 +1,15 @@
 services:
   - type: web
-    name: airfare-api
+    name: airfare-intelligence-platform
     env: python
-    buildCommand: "cd backend && pip install -r requirements.txt && playwright install chromium --with-deps"
+    buildCommand: "npm --prefix frontend install && npm --prefix frontend run build && pip install -r backend/requirements.txt"
     startCommand: "cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
     envVars:
       - key: DATA_PROVIDER
-        value: scraper
+        value: demo
       - key: COLLECTION_INTERVAL_MINUTES
         value: "30"
       - key: DATABASE_URL
         value: sqlite:///./airfare_intelligence.db
+      - key: PYTHON_VERSION
+        value: 3.11.8

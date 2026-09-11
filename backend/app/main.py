@@ -16,6 +16,18 @@ async def lifespan(app: FastAPI):
     logger.info("Initializing database tables...")
     Base.metadata.create_all(bind=engine)
     
+    # Auto-seed initial data if fresh database in cloud deployment
+    try:
+        from app.database.session import SessionLocal
+        from app.models.all_models import Route
+        from app.seed import seed_database
+        with SessionLocal() as db:
+            if db.query(Route).count() == 0:
+                logger.info("Fresh database detected in cloud deployment! Auto-seeding 30-day realistic observations...")
+                seed_database()
+    except Exception as e:
+        logger.warning(f"Auto-seed check: {e}")
+
     # Start background scheduler
     logger.info("Starting background collection scheduler...")
     try:
@@ -68,6 +80,27 @@ def health_check():
 
 # Include API V1 Router
 app.include_router(api_router, prefix=settings.API_V1_STR)
+
+# Optional Static Frontend Serving (Single-Container Fullstack Cloud Deployment)
+import os
+from starlette.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+
+FRONTEND_DIST = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "frontend", "dist"))
+if os.path.exists(FRONTEND_DIST):
+    logger.info(f"Serving compiled frontend static assets from: {FRONTEND_DIST}")
+    assets_path = os.path.join(FRONTEND_DIST, "assets")
+    if os.path.exists(assets_path):
+        app.mount("/assets", StaticFiles(directory=assets_path), name="assets")
+
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def serve_spa_app(full_path: str):
+        if full_path.startswith("api") or full_path.startswith("docs") or full_path.startswith("openapi.json"):
+            return None
+        file_path = os.path.join(FRONTEND_DIST, full_path)
+        if os.path.isfile(file_path):
+            return FileResponse(file_path)
+        return FileResponse(os.path.join(FRONTEND_DIST, "index.html"))
 
 if __name__ == "__main__":
     import uvicorn

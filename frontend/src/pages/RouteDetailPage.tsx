@@ -34,9 +34,9 @@ export const RouteDetailPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <div className="inline-block w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-4" />
-        <div className="text-gray-600 font-semibold text-sm">
+      <div className="w-full px-4 py-24 text-center">
+        <div className="inline-block w-9 h-9 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mb-4" />
+        <div className="text-slate-800 font-bold text-sm">
           Loading Route Telemetry for {routeCode}...
         </div>
       </div>
@@ -45,7 +45,7 @@ export const RouteDetailPage: React.FC = () => {
 
   if (!route) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center text-gray-500">
+      <div className="w-full px-4 py-24 text-center text-slate-500">
         Route corridor '{routeCode}' not found.
       </div>
     );
@@ -54,33 +54,33 @@ export const RouteDetailPage: React.FC = () => {
   const spike = route.spike_analysis;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 py-6 space-y-6">
       {/* Back link & Route Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-gray-200">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
         <div>
           <Link
             to="/routes"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-900 transition-colors mb-2"
+            className="btn-secondary h-8 px-3 text-xs mb-3 inline-flex items-center gap-1.5"
           >
             <ArrowLeft className="w-3.5 h-3.5" /> Back to Route Directory
           </Link>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-extrabold text-gray-900 font-mono">
+            <h1 className="text-2xl font-extrabold text-slate-900 font-mono">
               {route.origin} → {route.destination}
             </h1>
             <AnomalyBadge status={route.anomaly_status} />
             <AuthenticityBadge isDemo={route.is_demo} />
           </div>
-          <p className="text-xs text-gray-500 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             {route.origin_name} to {route.destination_name} • Distance: {route.distance_km} km • CPI Basket Weight: {route.cpi_weight.toFixed(1)}
           </p>
         </div>
 
-        <div className="flex items-center gap-3 self-start md:self-auto">
+        <div className="flex items-center gap-3 self-start md:self-auto shrink-0">
           <a
             href={getExportCsvUrl(route.code)}
             download
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-gray-900 shadow transition-colors"
+            className="btn-primary"
           >
             <Download className="w-3.5 h-3.5" />
             Export Route Observations CSV

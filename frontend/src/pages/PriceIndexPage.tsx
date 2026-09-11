@@ -29,9 +29,9 @@ export const PriceIndexPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <div className="inline-block w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-4" />
-        <div className="text-gray-600 font-semibold text-sm">
+      <div className="w-full px-4 py-24 text-center">
+        <div className="inline-block w-9 h-9 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mb-4" />
+        <div className="text-slate-800 font-bold text-sm">
           Calculating CPI Augmentation Indices...
         </div>
       </div>
@@ -41,23 +41,23 @@ export const PriceIndexPage: React.FC = () => {
   const summary = indexData?.summary;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 py-6 space-y-6">
       {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-gray-200">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
         <div>
-          <div className="flex items-center gap-2 text-gray-900 font-bold text-xl">
-            <Layers className="w-6 h-6 text-blue-400" />
+          <div className="flex items-center gap-2 text-slate-900 font-bold text-xl">
+            <Layers className="w-6 h-6 text-blue-600" />
             <span>Prototype Airfare Price Index (CPI Augmentation)</span>
           </div>
-          <p className="text-xs text-gray-500 mt-1 max-w-3xl">
+          <p className="text-xs text-slate-500 mt-1 max-w-4xl leading-relaxed">
             High-frequency price index modeled to augment official Consumer Price Index (CPI) transport components, reflecting actual observed domestic passenger aviation tariffs across India.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={loadData}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-gray-50 text-gray-700 border border-gray-300"
+            className="btn-secondary"
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Recalculate
@@ -65,7 +65,7 @@ export const PriceIndexPage: React.FC = () => {
           <a
             href={getExportCsvUrl()}
             download
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-gray-900 shadow"
+            className="btn-primary"
           >
             <Download className="w-3.5 h-3.5" />
             Export Basket CSV

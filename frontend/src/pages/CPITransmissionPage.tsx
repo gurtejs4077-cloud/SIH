@@ -57,9 +57,9 @@ export const CPITransmissionPage: React.FC = () => {
 
   if (loading && !transmission) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <div className="inline-block w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-4" />
-        <div className="text-gray-600 font-semibold text-sm">
+      <div className="w-full px-4 py-24 text-center">
+        <div className="inline-block w-9 h-9 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mb-4" />
+        <div className="text-slate-800 font-bold text-sm">
           Loading MoSPI eSankhyiki Transmission & RBI MPC Analysis...
         </div>
       </div>
@@ -74,22 +74,22 @@ export const CPITransmissionPage: React.FC = () => {
   const simAugmentedHeadline = (5.12 + (parseFloat(simDirectBps) * 1.32) / 100).toFixed(2);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 py-6 space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
         <div>
-          <div className="flex items-center gap-2 text-xl font-bold text-gray-900">
-            <Layers className="w-6 h-6 text-blue-400" />
+          <div className="flex items-center gap-2 text-xl font-bold text-slate-900">
+            <Layers className="w-6 h-6 text-blue-600" />
             <span>MoSPI eSankhyiki CPI Transmission & RBI MPC Impact</span>
           </div>
-          <p className="text-xs text-gray-500 mt-1 max-w-3xl">
+          <p className="text-xs text-slate-500 mt-1 max-w-4xl leading-relaxed">
             Augmentation of the Transport & Communication CPI subgroup (Urban vs. Rural vs. Combined) and simulation of pass-through impacts onto Headline CPI and RBI Monetary Policy Committee (MPC) monetary stance.
           </p>
         </div>
 
         <button
           onClick={loadAll}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-gray-50 text-gray-700 border border-gray-300 self-start sm:self-auto"
+          className="btn-secondary self-start sm:self-auto shrink-0"
         >
           <RefreshCw className="w-3.5 h-3.5" />
           Refresh
@@ -108,25 +108,74 @@ export const CPITransmissionPage: React.FC = () => {
       {rbiImpact && <RBIMPCGauge impact={rbiImpact} />}
 
       {/* Interactive Scenario Simulator */}
-      <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm space-y-5">
-        <div className="flex items-center justify-between pb-3 border-b border-gray-200">
+      <div className="bg-white border border-slate-200 rounded-xl p-5 sm:p-6 shadow-xs space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-200 gap-2">
           <div className="flex items-center gap-2">
-            <Sliders className="w-5 h-5 text-blue-400" />
-            <span className="text-base font-bold text-gray-900 uppercase tracking-wider">
+            <Sliders className="w-5 h-5 text-blue-600" />
+            <span className="text-sm sm:text-base font-bold text-slate-900 uppercase tracking-wider">
               Interactive Transmission & Pass-Through Simulator
             </span>
           </div>
-          <span className="text-xs font-mono font-bold text-amber-400 bg-amber-950/60 px-2.5 py-1 rounded border border-amber-800/80">
+          <span className="text-xs font-mono font-bold text-amber-700 bg-amber-50 px-3 py-1 rounded-full border border-amber-200 self-start sm:self-auto shadow-xs">
             Simulated Airfare Surge: {simulatedAirfareChange > 0 ? `+${simulatedAirfareChange}%` : `${simulatedAirfareChange}%`}
           </span>
         </div>
 
-        <p className="text-xs text-gray-500">
-          Adjust the airfare inflation slider to test how various price shock scenarios pass through to Urban vs Rural transport subgroups and the resulting headline inflation pressure facing the RBI MPC.
+        <p className="text-xs text-slate-500 leading-relaxed">
+          Adjust the airfare inflation slider or select a policy preset below to test how various price shock scenarios pass through to Urban vs Rural transport subgroups and the resulting headline inflation pressure facing the RBI MPC.
         </p>
 
+        {/* Preset scenario buttons */}
+        <div className="flex flex-wrap items-center gap-2 pt-1">
+          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mr-1">Presets:</span>
+          <button
+            type="button"
+            onClick={() => setSimulatedAirfareChange(0)}
+            className={`h-8 px-3 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
+              simulatedAirfareChange === 0
+                ? 'bg-blue-50 text-blue-700 border-blue-300 shadow-xs'
+                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+            }`}
+          >
+            Baseline Equilibrium (0%)
+          </button>
+          <button
+            type="button"
+            onClick={() => setSimulatedAirfareChange(25)}
+            className={`h-8 px-3 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
+              simulatedAirfareChange === 25
+                ? 'bg-amber-50 text-amber-800 border-amber-300 shadow-xs'
+                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+            }`}
+          >
+            Seasonal Peak (+25%)
+          </button>
+          <button
+            type="button"
+            onClick={() => setSimulatedAirfareChange(50)}
+            className={`h-8 px-3 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
+              simulatedAirfareChange === 50
+                ? 'bg-orange-50 text-orange-800 border-orange-300 shadow-xs'
+                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+            }`}
+          >
+            Festival Rush (+50%)
+          </button>
+          <button
+            type="button"
+            onClick={() => setSimulatedAirfareChange(90)}
+            className={`h-8 px-3 text-xs font-semibold rounded-lg border transition-all cursor-pointer ${
+              simulatedAirfareChange === 90
+                ? 'bg-rose-50 text-rose-800 border-rose-300 shadow-xs'
+                : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+            }`}
+          >
+            Fuel / Capacity Shock (+90%)
+          </button>
+        </div>
+
         {/* Range Slider */}
-        <div className="space-y-2">
+        <div className="space-y-2 pt-2">
           <input
             type="range"
             min="-20"
@@ -134,13 +183,13 @@ export const CPITransmissionPage: React.FC = () => {
             step="1"
             value={simulatedAirfareChange}
             onChange={(e) => setSimulatedAirfareChange(parseFloat(e.target.value))}
-            className="w-full h-2 bg-gray-50 rounded-lg appearance-none cursor-pointer accent-blue-500"
+            className="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600 border border-slate-200"
           />
-          <div className="flex justify-between text-[11px] text-gray-400 font-mono">
-            <span>-20% (Deflationary Fare Discount)</span>
-            <span>0% (Baseline Equilibrium)</span>
-            <span>+50% (Seasonal Spike)</span>
-            <span>+120% (Severe Capacity Shock)</span>
+          <div className="flex justify-between text-[11px] text-slate-400 font-mono">
+            <span>-20% (Discounting)</span>
+            <span>0% (Baseline)</span>
+            <span>+50% (Spike)</span>
+            <span>+120% (Extreme Shock)</span>
           </div>
         </div>
 

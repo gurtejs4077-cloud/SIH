@@ -7,6 +7,7 @@ from app.models.all_models import Route
 from app.schemas.all_schemas import AnomalyListResponse, BookingWindowResponse
 from app.analytics.anomaly_detector import detect_route_anomalies
 from app.analytics.elasticity import calculate_booking_window_elasticity
+from app.analytics.forecaster import generate_airfare_forecast
 
 router = APIRouter(prefix="/analytics", tags=["Analytics"])
 
@@ -42,3 +43,17 @@ def get_booking_window_analysis(
     Computes average savings for early booking (e.g. 30 days early).
     """
     return calculate_booking_window_elasticity(db, route_code=route)
+
+@router.get("/forecast")
+def get_airfare_forecast(
+    route: Optional[str] = "ALL",
+    horizon: int = Query(default=30, ge=7, le=90),
+    model: str = Query(default="ensemble"),
+    db: Session = Depends(get_db)
+):
+    """
+    Computes real-time predictive forecast with historical baseline (solid)
+    and future projected trajectory (dashed) with 95% confidence intervals and CPI pass-through.
+    """
+    return generate_airfare_forecast(db, route_code=route or "ALL", horizon_days=horizon, model_type=model)
+

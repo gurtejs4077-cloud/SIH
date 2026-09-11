@@ -3,14 +3,14 @@ import { BookOpen, Shield, Calculator, CheckCircle, AlertTriangle, Key } from 'l
 
 export const MethodologyPage: React.FC = () => {
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10">
+    <div className="w-full px-4 sm:px-6 md:px-8 lg:px-10 py-6 space-y-6">
       {/* Header */}
-      <div className="pb-4 border-b border-gray-200">
-        <div className="flex items-center gap-2 text-xl font-bold text-gray-900">
-          <BookOpen className="w-6 h-6 text-blue-400" />
+      <div className="pb-4 border-b border-slate-200">
+        <div className="flex items-center gap-2 text-xl font-bold text-slate-900">
+          <BookOpen className="w-6 h-6 text-blue-600" />
           <span>Technical Methodology & Compliance Charter</span>
         </div>
-        <p className="text-xs text-gray-500 mt-1">
+        <p className="text-xs text-slate-500 mt-1 max-w-4xl leading-relaxed">
           Formal documentation of price index mathematical formulations, anomaly detection logic, booking elasticity metrics, and data integrity standards for SIH 2026.
         </p>
       </div>
