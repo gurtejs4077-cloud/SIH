@@ -286,3 +286,5 @@ All 13 integration and unit tests validate fare normalization math ($base + taxe
 ## 14. License & SIH 2026 Disclosure
 
 This software is developed as a technical and architectural prototype for **Smart India Hackathon (SIH 2026)**. It is an academic and engineering demonstrator and is not an official gazetted index of the Government of India or the Ministry of Statistics and Programme Implementation (MoSPI).
+#   S I H  
+ 
